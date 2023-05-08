@@ -1,0 +1,39 @@
+{% extends 'template.html' %}
+{% block content %}
+  <section class="header-img adjust">
+    <img src="{{ url_for('static',filename='team.jpg') }}" alt="{{ team['name'] }}">
+    <div class="team-info-grid adjust">
+      <div class="team-wrapper glass">
+        <img src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+      </div>
+      <div class="team-name-wrapper glass">
+        <h1>{{ team['name'] }} {{ team['nickname'] }}</h1>
+      </div>
+      <div class="info-list glass flex">
+        <p>Coming from {{ team['city'] }}</p>
+        <p>Coach: {{ coach['first_name'] }} {{ coach['last_name'] }}</p>
+        <p>{{ team['division'] }}</p>
+        <!-- short_name varchar(30) NOT NULL,
+  division varchar(100) DEFAULT NULL,
+  cp INTEGER NOT NULL DEFAULT '0',
+  cp_used INTEGER NOT NULL DEFAULT '0',
+  recruiting_poINTEGERs INTEGER NOT NULL DEFAULT '0',
+  active char(1) NOT NULL DEFAULT 'Y',
+  overall INTEGER NOT NULL DEFAULT '0',
+  aggression INTEGER NOT NULL DEFAULT '0', -->
+        <p>{{ team['short_name'] }}</p>
+        <p>cp: {{ team['cp'] }}</p>
+        <p>cp used: {{ team['cp_used'] }}</p>
+        <p>overall: {{ team['overall'] }}</p>
+        <p>agg: {{ team['aggression'] }}</p>
+      </div>
+      <div class="glass">
+        Lorem ipsum
+      </div>
+    </div>
+  </section>
+</header>
+<main class="adjust">
+  
+</main>
+{% endblock %}

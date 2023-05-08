@@ -1,0 +1,66 @@
+{% extends 'template.html' %}
+{% block content %}
+<style>
+  .header-img {
+    height: 90vh;
+  }
+</style>
+<section class="header-img adjust">
+            <img src="{{url_for('static', filename='header.jpg')}}" alt="waterpolo">
+  <div class="float-login-box glass">
+        <div>
+        <h2>NEW WB ID</h2>
+        </div>
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}">{{ message }}</div>
+  {% endfor %}
+        <form method="POST">
+          <input type="text" 
+                name="first_name" 
+                placeholder="first name" 
+                required=""
+                value="{{ request.form['first_name'] }}"></input>
+          <input type="text" 
+                name="last_name" 
+                placeholder="last name" 
+                required=""
+                value="{{ request.form['last_name'] }}"></input>
+          <input type="text" 
+                name="email" 
+                placeholder="email" 
+                id="userName" 
+                required=""
+                value="{{ request.form['email'] }}"></input>
+        	<input type="password" 
+                name="password" 
+                placeholder="password" 
+                id="myInput" 
+                required=""
+                value="{{ request.form['password'] }}"></input>
+        	<input type="password" 
+                name="retype_password" 
+                placeholder="Retype password" 
+                required=""
+                value="{{ request.form['retype_password'] }}"></input>
+          <input type="checkbox" onclick="myFunction()">Show Password
+        	<button type="submit" class="button">Login</button>
+        </form>
+    </div>
+        </section>
+    </header>
+    <main class="adjust">
+      <main>
+      </main>
+<script>
+  
+    function myFunction() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+
+</script>
+{% endblock %}

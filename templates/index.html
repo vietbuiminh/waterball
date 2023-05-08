@@ -1,0 +1,73 @@
+{% extends 'template.html' %}
+{% block content %}
+<section class="header-img adjust">
+    <div id="canvas_body_div">  
+      <canvas data-processing-sources="{{url_for('static', filename='wave.pde')}}"></canvas>
+    </div>
+    <img class="bg-opacity" src="{{url_for('static', filename='header.jpg')}}" alt="waterpolo" id="indexhd">
+    <div class="overlay-text">
+      <div class="background-gradient">
+      <div class="logo-group" id="logo">
+        <span class="iconify" data-icon="mdi-waves"></span>
+        <span class="iconify" data-icon="mdi-volleyball"></span>
+      </div>
+      <h1>WATERBALL</h1>
+      <p>Managing and simulating your waterpolo games on WB.</p>
+      </div>
+    </div>
+</section>
+    </header>
+    <main class="adjust">
+        <section class="teams flex">
+          {% for team in teams %}
+            {% set url = team['logo'] %}
+            <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper">
+                <img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+              
+            </a>
+          {% endfor %}
+
+        </section>
+        <section class="split">
+            <aside class="standing">
+                <h2>Standings</h2>
+              {% for stand in standing %}
+              <h3>{{ stand }}</h3>
+              {% endfor %}
+                <table class="styled-table index-table glass">
+                  <thead>
+                      <tr>
+                          <th>School</th>
+                          <th>Conference</th>
+                          <th>Overall</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for stand in standings %}
+                      <tr>
+                          <td>
+                            <a href="{{ url_for('displayTeam', id=stand['id']) }}" class="team-logo-wrapper">
+                                <img class="grey-filter" src="{{ url_for('static',filename=stand['logo']) }}" alt="{{ stand['id'] }}">
+                              
+                            </a>
+                            {{ stand["name"] }}
+                          </td>
+                          <td>{{ stand["division"] }}</td>
+                          <td>{{ stand["wins"] }} - {{ stand["losses"] }}</td>
+                      </tr>
+                    {%endfor%}
+                  </tbody>
+              </table>
+            </aside>
+          <article>
+            <h2>This Week Schedule</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
+            </article>
+        </section>
+    </main>
+
+{% endblock %}
