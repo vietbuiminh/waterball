@@ -11,7 +11,12 @@ class User(UserMixin):
     self.last_accessed = last_accessed
     self.access_level = access_level
     self.offset = offset
+    self.got_avatar = False
+    self.avatar_url = ''
     self.authenticated = False
+  def avatar_url(self, url):
+    self.avatar_url = url
+    self.got_avatar = True
   def is_active(self):
     return self.is_active()
   def is_anonymous(self):

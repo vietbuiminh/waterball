@@ -42,6 +42,8 @@ CREATE TABLE coaches (
   last_accessed datetime NOT NULL DEFAULT '2020-01-01 00:00:00',
   access_level varchar(10) NOT NULL DEFAULT '0000000000',
   offset INTEGER NOT NULL DEFAULT '-6'
+  -- got_avatar BOOLEAN NOT NULL DEFAULT False,
+  -- avatar_url varchar(100) NOT NULL DEFAULT 'placeholder.jpg'
 ) ;
 
 --

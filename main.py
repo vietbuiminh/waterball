@@ -196,12 +196,17 @@ def edit_profile():
       first_name = request.form['first_name']
       last_name = request.form['last_name']
       email = request.form['email']
+      url_avatar = ''
+      twitter_username = request.form['twitter_username']
       if first_name == '':
         first_name = current_user.first_name
       if last_name == '':
         last_name = current_user.last_name
       if email == '':
         email = current_user.email
+      if twitter_username != '':
+        url_avatar = "https://unavatar.io/twitter/" + twitter_username
+        current_user.avatar_url(url_avatar)
       conn = get_db_connection()
       conn.execute('UPDATE coaches SET first_name = ?, last_name = ?, email = ? WHERE coach_id = ?', (first_name, last_name, email, coach_id))
       conn.commit()
