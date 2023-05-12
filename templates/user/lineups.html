@@ -1,19 +1,220 @@
 {% extends "template_profile.html" %}
 {% block content %}
-        <a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
-        <a href="/profile/lineups/" class="tool-item hover active-item">lineups</a>
-        <a href="/profile/schedule/" class="tool-item hover">schedule</a>
-        <a href="/profile/standings/" class="tool-item hover">standings</a>
-        <a href="/profile/players/" class="tool-item hover">players</a>
-      </div>
-    </div>
+<a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
+<a href="/profile/lineups/" class="tool-item hover active-item ">lineups</a>
+<a href="/profile/schedule/" class="tool-item hover">schedule</a>
+<a href="/profile/standings/" class="tool-item hover">standings</a>
+<a href="/profile/players/" class="tool-item hover">players</a>
+</div>
+</div>
 </header>
-<main class="adjust">
-  <section class= "adjust-browse">
-    {% if current_user.is_authenticated %}
-    {% endif %}   
-    
-  </section>
-   
+<style>
+  .grid-table {
+    overflow-x: auto;
+    animation: transition-table-up 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+  .styled-table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .styled-table > *{
+    font-size: 0.8em;
+  }
+  .styled-table th, .styled-table td {
+    padding: 5px 10px;
+  }
+  .styled-table th:nth-child(n + 6), .styled-table td:nth-child(n + 6) {
+    max-width: 40px;
+  }
+  .styled-table th:nth-child(n + 6) {
+    height: 76px;
+    white-space: nowrap;
+    transform: translate(-2px, 21px) rotate(315deg);
+    width: 30px;
+  }
+  .styled-table th:last-child, .styled-table td:last-child{
+    max-width: 50px !important;
+  }
+  .tablinks a, .tablinks {
+    font-family: var(--font-display);
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .tabteam {
+    height: 35px !important;
+  }
+  .team-style {
+    text-align: center;
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.8em;
+    color: black;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .team-logo-wrapper h2 {
+    transition: .25s;
+  }
+  .team-logo-wrapper .grey-filter {
+    -webkit-transition: .25s -webkit-filter linear;
+    -moz-transition: .25s -moz-filter linear;
+    -moz-transition: .25s filter linear;
+    -ms-transition: .25s -ms-filter linear;
+    -o-transition: .25s -o-filter linear;
+    transition: .25s filter linear, .25s -webkit-filter linear;
+  }
+  .team-logo-wrapper:hover h2, .team-logo-wrapper:hover .grey-filter{
+    color: var(--secondary-blue);
+    filter: revert;
+  }
+  td .button .material-symbols-outlined{
+    font-size: 15px;
+  }
+  .tab button.active::after { 
+    background: rgb(117,139,253);
+    background: linear-gradient(107deg, rgba(117,139,253,1) 0%, rgba(117,139,253,0.2217480742296919) 67%);
+  }
+  td:first-child {
+    display: grid !important;
+    height: 20px;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+  }
+  td .button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: rgba(0,0,0,0);
+    color: grey;
+  }
+  td .button:hover {
+    transform: translatey(1px);
+  }
+  td div {
+    min-width: 130px;
+  }
+  .tab {
+    border-top: none;
+    width: 20%;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .tabwrapper {
+    border-top: none;
+  }
+</style>
+<main>
+  {% for team in teams %}
+  <table class="styled-table glass">
+                <thead>
+                    <tr>
+                        <th colspan="14"
+                            style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">
+                            Lineup</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <div>Name</div>
+                        </th>
+                        <th>Age</th>
+                        <th>Position</th>
+                        <th>Jersey</th>
+                        <th>Swimming</th>
+                        <th>Ball Handling</th>
+                        <th>Passing</th>
+                        <th>Shooting</th>
+                        <th>Defense</th>
+                        <th>Goal Keeping</th>
+                        <th>Fit</th>
+                        <th>Aggression</th>
+                        <th>Overall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    {% if current_user.id == team['coach_id'] %}
+                    <tr>
+                        <td>
+                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
+                                    player['first_name'] }} {{ player['last_name'] }}</a></div>
+                        </td>
+                        <td>{{ player['age'] }}</td>
+                        <td>{{ player['position'] }}</td>
+                        <td>{{ player['jersey'] }}</td>
+                        <td>{{ player['swimming'] }}</td>
+                        <td>{{ player['ballhandling'] }}</td>
+                        <td>{{ player['passing'] }}</td>
+                        <td>{{ player['shooting'] }}</td>
+                        <td>{{ player['defense'] }}</td>
+                        <td>{{ player['goalkeeping'] }}</td>
+                        <td>{{ player['fit'] }}</td>
+                        <td>{{ player['aggression'] }}</td>
+                        <td>{{ player['overall'] }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+  {% endfor %}
 </main>
+<script>
+    function openTab(evt, id) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(id).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("searchTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 2; i < tr.length; i++) {
+            a = tr[i].getElementsByTagName("td")[1].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+            if (a) {
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 {% endblock %}

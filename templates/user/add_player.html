@@ -1,0 +1,256 @@
+{% extends "template_profile.html" %}
+{% block content %}
+<style>
+  .classic-info .edit-button {
+    display: none;
+  }
+</style>
+<a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
+<a href="/profile/lineups/" class="tool-item hover">lineups</a>
+<a href="/profile/schedule/" class="tool-item hover">schedule</a>
+<a href="/profile/standings/" class="tool-item hover">standings</a>
+<a href="/profile/players/" class="tool-item hover active-item">players</a>
+</div>
+</div>
+</header>
+<style>
+  .grid-table {
+    overflow-x: auto;
+    animation: transition-table-up 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+  .tab button {
+    padding: 5px 16px;
+  }
+  .tablinks a, .tablinks {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .add-window {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1em;
+    width: fit-content;
+    min-width: 500px;
+  }
+  .edit {
+    padding: 10px 20px;
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+    background: lightgray;
+  }
+  td .button .material-symbols-outlined{
+    font-size: 15px;
+  }
+  .tab button.active::after { 
+    background: rgb(117,139,253);
+    background: linear-gradient(107deg, rgba(117,139,253,1) 0%, rgba(117,139,253,0.2217480742296919) 67%);
+  }
+  td:first-child {
+    display: grid !important;
+    height: 20px;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+  }
+  td .button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: rgba(0,0,0,0);
+    color: grey;
+  }
+  td .button:hover {
+    transform: translatey(1px);
+  }
+  td div {
+    min-width: 130px;
+  }
+  .tab {
+    border-top: none;
+    width: 20%;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .tabwrapper {
+    border-top: none;
+  }
+  .add-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>
+<main class="appstyle">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}">{{ message }}</div>
+  {% endfor %}
+  <form action="{{ url_for('profile_players')}}"class="go-back-button corner">
+      <button href="/profile/players/" class="button glass">
+      <span class="material-symbols-outlined">
+      undo
+      </span>Back to Players</button>
+  </form>
+  <div class="add-title save-button adjust adjust-browse">
+    <h1 class="">
+      <span class="material-symbols-outlined">
+      add
+      </span>
+      New Player
+    </h1>
+    <div>
+    <div class="add-button adjust">
+    <button type="submit" class="button"><span class="material-symbols-outlined">
+      exit_to_app
+      </span>Save</button></button>
+    </div>
+  </div>
+  </div>
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, '0')" id="defaultOpen">
+      <a class="team-logo-wrapper tabteam">
+      <span class="material-symbols-outlined">
+      manage_accounts
+      </span>Player Info
+      </a>
+    </button>
+    <button class="tablinks" onclick="openTab(event, '1')">
+      <a class="team-logo-wrapper tabteam">
+      <span class="material-symbols-outlined">
+      settings_accessibility
+      </span>Player Skills
+      </a>
+    </button>
+  </div>
+    <form method="POST" class="">
+    <div class="tabwrapper edit">
+      <style>
+        .grid-table {
+          overflow-x: auto;
+          animation: transition-table-up 0.5s ease-out forwards;
+          animation-delay: 100ms;
+          gap: 0;
+          column-gap: 1em;
+          border-radius: 10px;
+        }
+        .add-window p {
+          background: none;
+          text-transform: uppercase;
+          font-weight: 500;
+          color: grey;
+        }
+      </style>
+      <div class="grid-table glass add-window tabcontent" id="0">
+        <p>First Name</p>
+          <input
+            type="text" 
+                name="first_name" 
+                placeholder="First Name"
+                value="{{ request.form['first_name'] }}"></input>
+        <p>Last Name</p>
+          <input type="text" 
+                name="last_name" 
+                placeholder="Last Name" 
+                value="{{ request.form['last_name'] }}"></input>
+        <p>Year</p>
+          <input type="text" 
+                name="year" 
+                placeholder="Year" 
+                value="{{ request.form['age'] }}"></input>
+        <p>Position</p>
+          <input type="text" 
+                name="position" 
+                placeholder="Position" 
+                value="{{ request.form['position'] }}"></input>
+        <p>Jersey</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="Number" 
+                value="{{ request.form['Jersey'] }}"></input>
+      
+      </div>
+      <div class="grid-table glass add-window tabcontent" id="1">
+        <p>Swimming</p>
+          <input
+            type="text" 
+                name="first_name" 
+                placeholder="0"
+                value="{{ request.form['swimming'] }}"></input>
+        <p>Ball Handling</p>
+          <input type="text" 
+                name="last_name" 
+                placeholder="0" 
+                value="{{ request.form['ballhandling'] }}"></input>
+        <p>Passing</p>
+          <input type="text" 
+                name="year" 
+                placeholder="0" 
+                value="{{ request.form['passing'] }}"></input>
+        <p>Shooting</p>
+          <input type="text" 
+                name="position" 
+                placeholder="0" 
+                value="{{ request.form['shooting'] }}"></input>
+        <p>Defense</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="0" 
+                value="{{ request.form['defense'] }}"></input>
+      
+        <p>Goal Keeping</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="0" 
+                value="{{ request.form['goalkeeping'] }}"></input>
+        <p>Fit</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="0" 
+                value="{{ request.form['fit'] }}"></input>
+        <p>Aggression</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="0" 
+                value="{{ request.form['aggression'] }}"></input>
+      
+      </div>
+    </div>
+  </form>
+</main>
+<script>
+    function openTab(evt, id) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(id).style.display = "grid";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+{% endblock %}

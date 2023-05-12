@@ -1,157 +1,328 @@
 {% extends "template_profile.html" %}
 {% block content %}
-        <a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
-        <a href="/profile/lineups/" class="tool-item hover">lineups</a>
-        <a href="/profile/schedule/" class="tool-item hover">schedule</a>
-        <a href="/profile/standings/" class="tool-item hover">standings</a>
-        <a href="/profile/players/" class="tool-item hover active-item">players</a>
-      </div>
-    </div>
+<a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
+<a href="/profile/lineups/" class="tool-item hover">lineups</a>
+<a href="/profile/schedule/" class="tool-item hover">schedule</a>
+<a href="/profile/standings/" class="tool-item hover">standings</a>
+<a href="/profile/players/" class="tool-item hover active-item">players</a>
+</div>
+</div>
 </header>
-<main class="">
-  <section class= "">
-    <style>
-      .styled-table > *{
-        font-size: 0.8em;
-      }
-      .styled-table th, .styled-table td {
-        padding: 5px 10px;
-      }
-      .styled-table th:nth-child(n + 5), .styled-table td:nth-child(n + 5) {
-        max-width: 40px;
-      }
-      .styled-table th:nth-child(n + 5) {
-        height: 76px;
-        white-space: nowrap;
-        transform: translate(-2px, 21px) rotate(315deg);
-        width: 30px;
-      }
-      .styled-table th:last-child, .styled-table td:last-child{
-        max-width: 50px !important;
-      }
-      .team-style {
-        text-align: center;
-        margin: 0;
-        font-family: var(--font-display);
-        text-transform: uppercase;
-        font-size: 40px;
-        font-weight: 800;
-        line-height: 0.8em;
-        color: black;
-      }
-      .team-logo-wrapper {
-        height: 52px;
-        align-items: center;
-        flex: auto;
-        justify-content: center;
-        opacity: 0.9;
-        transition: .25s;
-        text-decoration: none;
-      }
-      .team-logo-wrapper h2 {
-        transition: .25s;
-      }
-      .team-logo-wrapper .grey-filter {
-        -webkit-transition: .25s -webkit-filter linear;
-        -moz-transition: .25s -moz-filter linear;
-        -moz-transition: .25s filter linear;
-        -ms-transition: .25s -ms-filter linear;
-        -o-transition: .25s -o-filter linear;
-        transition: .25s filter linear, .25s -webkit-filter linear;
-      }
-      .team-logo-wrapper:hover h2, .team-logo-wrapper:hover .grey-filter{
-        color: var(--secondary-blue);
-        filter: revert;
-      }
-      td .button .material-symbols-outlined{
-        font-size: 15px;
-      }
-      td:first-child {
-        display: grid !important;
-        height: 40px;
-        width: 100%;
-        padding: 0;
-        align-items: center;
-      }
-      td .button {
-        width: 35px;
-        margin: 0;
-        padding: 10px 10px;
-        border-radius: 0;
-        background-color: rgba(0,0,0,0);
-        color: grey;
-      }
-      td .button:hover {
-        transform: translatey(1px);
-      }
-    </style>
-    <!-- <p class="adjust">Players under your team and management.</p> -->
-    <div class="grid-table">
-    {% if teams | length != 0 %}
-    {% for team in teams %}
-      {% set url = team['logo'] %}
-    <div>
-      <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper"><img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
-      <h2 class="team-style">{{ team['name'] }} {{ team['nickname'] }}</h2>
-      </a>
-      <table class="styled-table glass">
-        <thead>
-            <tr>
-              <th colspan="14" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">Team Roster</th>
-            </tr>
-            <tr>
-                <th>Edit</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Position</th>
-                <th>Jersey</th>
-                <th>Swimming</th>
-                <th>Ball Handling</th>
-                <th>Passing</th>
-                <th>Shooting</th>
-                <th>Defense</th>
-                <th>Goal Keeping</th>
-                <th>Fit</th>
-                <th>Aggression</th>
-                <th>Overall</th>
-            </tr>
-        </thead>
-        <tbody>
-          {% for player in players %}
-          {% if player['team_id'] == team['team_id'] %}
-            <tr>
-                <td>
-                  <a href="#" class="button">
-                    <span class="material-symbols-outlined">
-                    edit
-                    </span>
-                  </a>
-                </td>
-                <td>{{ player['first_name'] }} {{ player['last_name'] }}</td>
-                <td>{{ player['age'] }}</td>
-                <td>{{ player['position'] }}</td>
-                <td>{{ player['jersey'] }}</td>
-                <td>{{ player['swimming'] }}</td>
-                <td>{{ player['ballhandling'] }}</td>
-                <td>{{ player['passing'] }}</td>
-                <td>{{ player['shooting'] }}</td>
-                <td>{{ player['defense'] }}</td>
-                <td>{{ player['goalkeeping'] }}</td>
-                <td>{{ player['fit'] }}</td>
-                <td>{{ player['aggression'] }}</td>
-                <td>{{ player['overall'] }}</td>
-            </tr>
-          {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
+<style>
+  .grid-table {
+    overflow-x: auto;
+    animation: transition-table-up 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+  .styled-table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .styled-table > *{
+    font-size: 0.8em;
+  }
+  .styled-table th, .styled-table td {
+    padding: 5px 10px;
+  }
+  .styled-table th:nth-child(n + 6), .styled-table td:nth-child(n + 6) {
+    max-width: 40px;
+  }
+  .styled-table th:nth-child(n + 6) {
+    height: 76px;
+    white-space: nowrap;
+    transform: translate(-2px, 21px) rotate(315deg);
+    width: 30px;
+  }
+  .styled-table th:last-child, .styled-table td:last-child{
+    max-width: 50px !important;
+  }
+  .tablinks a, .tablinks {
+    font-family: var(--font-display);
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .tabteam {
+    height: 35px !important;
+  }
+  .team-style {
+    text-align: center;
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.8em;
+    color: black;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .team-logo-wrapper h2 {
+    transition: .25s;
+  }
+  .team-logo-wrapper .grey-filter {
+    -webkit-transition: .25s -webkit-filter linear;
+    -moz-transition: .25s -moz-filter linear;
+    -moz-transition: .25s filter linear;
+    -ms-transition: .25s -ms-filter linear;
+    -o-transition: .25s -o-filter linear;
+    transition: .25s filter linear, .25s -webkit-filter linear;
+  }
+  .team-logo-wrapper:hover h2, .team-logo-wrapper:hover .grey-filter{
+    color: var(--secondary-blue);
+    filter: revert;
+  }
+  td .button .material-symbols-outlined{
+    font-size: 15px;
+  }
+  .tab button.active::after { 
+    background: rgb(117,139,253);
+    background: linear-gradient(107deg, rgba(117,139,253,1) 0%, rgba(117,139,253,0.2217480742296919) 67%);
+  }
+  td:first-child {
+    display: grid !important;
+    height: 20px;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+  }
+  td .button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: rgba(0,0,0,0);
+    color: grey;
+  }
+  td .button:hover {
+    transform: translatey(1px);
+  }
+  td div {
+    min-width: 130px;
+  }
+  .tab {
+    border-top: none;
+    width: 20%;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .tabwrapper {
+    border-top: none;
+  }
+</style>
+<main class="appstyle">
+    <form class="add-button corner" action="{{ url_for('add_player') }}" method="POST">
+      <button type="submit" class="button glass">
+      <span class="material-symbols-outlined">
+        add
+      </span>Add Player</button>
+    </form>
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'all')" id="defaultOpen">
+            <a class="team-logo-wrapper tabteam">
+                <span class="material-symbols-outlined">
+                    all_inclusive
+                </span>All
+            </a>
+        </button>
+        {% for i in range(0, teams|length) %}
+        {% set team = teams[i] %}
+        <button class="tablinks" onclick="openTab(event, '{{team['team_id']}}')">
+            <a class="team-logo-wrapper tabteam">
+                <img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+                {{ team['name'] }}
+            </a>
+        </button>
+        {% endfor %}
     </div>
-    {% endfor %}
-    {% else %}
-      <p>You have no team assigned to your profile.</p>
-    {% endif %}
+    <div class="tabwrapper">
+        <div class="grid-table tabcontent" id="all">
+            <h2 class="team-style">All Players</h2>
+            <table class="styled-table glass" id="searchTable">
+                <thead>
+                    <tr>
+                        <th class="search" colspan="15"
+                            style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                            <span class="material-symbols-outlined">
+                                search
+                            </span>
+                            <input style="border-radius:13px;" type="text" id="searchInput" onkeyup="searchTable()"
+                                placeholder="Search for names">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Edit</th>
+                        <th>
+                            <div>Name</div>
+                        </th>
+                        <th>Team</th>
+                        <th>Age</th>
+                        <th>Position</th>
+                        <th>Jersey</th>
+                        <th>Swimming</th>
+                        <th>Ball Handling</th>
+                        <th>Passing</th>
+                        <th>Shooting</th>
+                        <th>Defense</th>
+                        <th>Goal Keeping</th>
+                        <th>Fit</th>
+                        <th>Aggression</th>
+                        <th>Overall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    {% for player in players %}
+                    {% if player['team_id'] == team['team_id'] %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('editPlayer', id=player['player_id']) }}" class="button">
+                                <span class="material-symbols-outlined">
+                                    edit
+                                </span>
+                            </a>
+                        </td>
+                        <td>
+                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{ player['first_name'] }} {{
+                                    player['last_name'] }}</a></div>
+                        </td>
+                        <td>{{ team["name"] }}</td>
+                        <td>{{ player['age'] }}</td>
+                        <td>{{ player['position'] }}</td>
+                        <td>{{ player['jersey'] }}</td>
+                        <td>{{ player['swimming'] }}</td>
+                        <td>{{ player['ballhandling'] }}</td>
+                        <td>{{ player['passing'] }}</td>
+                        <td>{{ player['shooting'] }}</td>
+                        <td>{{ player['defense'] }}</td>
+                        <td>{{ player['goalkeeping'] }}</td>
+                        <td>{{ player['fit'] }}</td>
+                        <td>{{ player['aggression'] }}</td>
+                        <td>{{ player['overall'] }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% for team in teams %}
+        {% set url = team['logo'] %}
+        <div class="grid-table tabcontent" id="{{ team['team_id'] }}">
+            <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper"><img
+                    class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+                <h2 class="team-style">{{ team['name'] }} {{ team['nickname'] }}</h2>
+            </a>
+            <table class="styled-table glass">
+                <thead>
+                    <tr>
+                        <th colspan="14"
+                            style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">
+                            Roster</th>
+                    </tr>
+                    <tr>
+                        <th>Edit</th>
+                        <th>
+                            <div>Name</div>
+                        </th>
+                        <th>Age</th>
+                        <th>Position</th>
+                        <th>Jersey</th>
+                        <th>Swimming</th>
+                        <th>Ball Handling</th>
+                        <th>Passing</th>
+                        <th>Shooting</th>
+                        <th>Defense</th>
+                        <th>Goal Keeping</th>
+                        <th>Fit</th>
+                        <th>Aggression</th>
+                        <th>Overall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    {% if player['team_id'] == team['team_id'] %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('editPlayer', id=player['player_id']) }}" class="button">
+                                <span class="material-symbols-outlined">
+                                    edit
+                                </span>
+                            </a>
+                        </td>
+                        <td>
+                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
+                                    player['first_name'] }} {{ player['last_name'] }}</a></div>
+                        </td>
+                        <td>{{ player['age'] }}</td>
+                        <td>{{ player['position'] }}</td>
+                        <td>{{ player['jersey'] }}</td>
+                        <td>{{ player['swimming'] }}</td>
+                        <td>{{ player['ballhandling'] }}</td>
+                        <td>{{ player['passing'] }}</td>
+                        <td>{{ player['shooting'] }}</td>
+                        <td>{{ player['defense'] }}</td>
+                        <td>{{ player['goalkeeping'] }}</td>
+                        <td>{{ player['fit'] }}</td>
+                        <td>{{ player['aggression'] }}</td>
+                        <td>{{ player['overall'] }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
     </div>
-  </section>
-   
 </main>
+<script>
+    function openTab(evt, id) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(id).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("searchTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 2; i < tr.length; i++) {
+            a = tr[i].getElementsByTagName("td")[1].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+            if (a) {
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 {% endblock %}

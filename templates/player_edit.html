@@ -1,0 +1,319 @@
+{% extends 'template.html' %}
+{% block content %}
+<style>
+.header-img {
+  height: 500px;
+}
+.team-info-grid {
+  grid-template-rows: 200px 1fr;
+}
+.header-img {
+  overflow: hidden;
+  background: rgb(66,121,255);
+background: linear-gradient(152deg, rgba(66,121,255,1) 0%, rgba(229,229,247,1) 100%);
+}
+.team-info-grid {
+  opacity: 0;
+  animation: transition-table 0.5s ease-out forwards;
+  animation-delay: 100ms;
+}
+.skills {
+  padding: 0 !important;
+}
+.skills .styled-table {
+  border-radius: var(--border-radius-small);
+  width: 100%;
+}
+.skills .styled-table tbody tr td:first-child {
+  display: revert;
+}
+.skills .styled-table tr{
+  background: none;
+  text-transform: uppercase;
+  font-weight: 200;
+  text-align: center;
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 0px;
+}
+.styled-table th, .styled-table td {
+    padding: 7px 15px;
+}
+.styled-table td {
+  font-size: 2.5em;
+}
+.info-list {
+    grid-column: span 1;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0.8em;
+}
+</style>
+  <section class="header-img adjust">
+    <div class="team-info-grid adjust">
+      <div class="team-wrapper glass">
+        <img src="{{ url_for('static',filename=player['logo']) }}" alt="player {{ player['last_name'] }}">
+      </div>
+      <style>
+        .team-name-wrapper > * {
+          margin-top: 0;
+          margin-bottom: 0;
+          text-align: center;
+        }
+      </style>
+      <div class="team-name-wrapper glass">
+        <h1 id="name" >{{ player['first_name'] }} {{ player['last_name'] }} <span style="font-size: 0.8em; color: white;text-shadow: -5px 5px 5px black, 5px 5px 5px black, 5px -5px 5px black, -5px -5px 5px black;">{{ player['jersey'] }}</span></h1>
+      </div>
+      <div class="info-list glass flex">
+            {% if player['age'] == 'Fr' %}
+          <p>Freshman</p>
+          {% elif player['age'] == 'So' %}
+          <p>Sophomore</p>
+          {% elif player['age'] == 'Jr' %}
+          <p>Junior</p>
+          {% elif player['age'] == 'Sr' %}
+          <p>Senior</p>
+          {% else %}
+          <p>TBA</p>
+          {% endif %}
+          <p>Position: {{ player['position'] }}</p>
+      </div>
+      <div class="skills">
+          <table class="styled-table glass">
+            <thead>
+                <tr>
+                  <th colspan="6" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">Player Skills</th>
+                </tr>
+                <tr>
+                    <th>Swimming</th>
+                    <th>Ball Handling</th>
+                    <th>Passing</th>
+                    <th>Shooting</th>
+                    <th>Defense</th>
+                    <th>Goal Keeping</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{% if player['swimming'] == 0 %}-{% else %}{{ player['swimming'] }}{% endif %}</td>
+                    <td>{% if player['ballhandling'] == 0 %}-{% else %}{{ player['ballhandling'] }}{% endif %}</td>
+                    <td>{% if player['passing'] == 0 %}-{% else %}{{ player['passing'] }}{% endif %}</td>
+                    <td>{% if player['shooting'] == 0 %}-{% else %}{{ player['shooting'] }}{% endif %}</td>
+                    <td>{% if player['defense'] == 0 %}-{% else %}{{ player['defense'] }}{% endif %}</td>
+                    <td>{% if player['goalkeeping'] == 0 %}-{% else %}{{ player['goalkeeping'] }}{% endif %}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </section>
+</header>
+<style>
+  :root {
+   --default-height: 80vh; 
+  }
+  .tab{
+    height: var(--default-height);
+  }
+  .tabwrapper {
+    height: calc(var(--default-height) - 80px);
+  }
+  .tab button {
+    padding: 5px 16px;
+  }
+  .tablinks a, .tablinks {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .info-window {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1em;
+    width: fit-content;
+    min-width: 500px;
+  }
+  input[type=text], input[type=inputBox], input[type=password], textarea {
+    font-size: revert;
+  }
+  .edit-button {
+    border: solid 1px #ccc;
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>
+<main class="">
+  {% if current_user.id != coach['coach_id'] %}
+    <h2 class="adjust">You do not have access to edit this player</h2>
+  {% else %}
+  <div class="title adjust">
+    <h1 class="">
+      <span class="material-symbols-outlined">
+      edit
+      </span>
+      Player Edit
+    </h1>
+    <form action="{{ url_for('deletePlayer', id=player['player_id']) }}" method="POST">
+    <div class="delete-button adjust">
+    <button type="submit" class="button"><span class="material-symbols-outlined">
+  delete
+  </span> Delete Player</button>
+    </div>
+  </form>
+  </div>
+  <div class="adjust">
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}">{{ message }}</div>
+  {% endfor %}
+  </div>
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, '0')" id="defaultOpen">
+      <a class="team-logo-wrapper tabteam">
+      <span class="material-symbols-outlined">
+      manage_accounts
+      </span>Player Info
+      </a>
+    </button>
+    <button class="tablinks" onclick="openTab(event, '1')">
+      <a class="team-logo-wrapper tabteam">
+      <span class="material-symbols-outlined">
+      settings_accessibility
+      </span>Player Skills
+      </a>
+    </button>
+  </div>
+  <form method="POST">
+    <div class="tabwrapper edit">
+      <style>
+        .grid-table {
+          overflow-x: auto;
+          animation: transition-table-up 0.5s ease-out forwards;
+          animation-delay: 100ms;
+          gap: 0;
+          column-gap: 1em;
+          border-radius: 10px;
+        }
+        .info-window p {
+          background: none;
+          text-transform: uppercase;
+          font-weight: 500;
+          color: grey;
+        }
+      </style>
+      <div class="grid-table glass info-window tabcontent" id="0">
+        <p>First Name</p>
+          <input
+            type="text" 
+                name="first_name" 
+                placeholder="{{ player['first_name'] }}"
+                value="{{ request.form['first_name'] }}"></input>
+        <p>Last Name</p>
+          <input type="text" 
+                name="last_name" 
+                placeholder="{{ player['last_name']}}" 
+                value="{{ request.form['last_name'] }}"></input>
+        <p>Year</p>
+          <input type="text" 
+                name="age" 
+                placeholder="{{ player['age']}}" 
+                value="{{ request.form['age'] }}"></input>
+        <p>Position</p>
+          <input type="text" 
+                name="position" 
+                placeholder="{{ player['position']}}" 
+                value="{{ request.form['position'] }}"></input>
+        <p>Jersey</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="{{ player['jersey']}}" 
+                value="{{ request.form['jersey'] }}"></input>
+      
+      </div>
+      <div class="grid-table glass info-window tabcontent" id="1">
+        <p>Swimming</p>
+          <input
+            type="text" 
+                name="first_name" 
+                placeholder="{{ player['swimming'] }}"
+                value="{{ request.form['swimming'] }}"></input>
+        <p>Ball Handling</p>
+          <input type="text" 
+                name="last_name" 
+                placeholder="{{ player['ballhandling']}}" 
+                value="{{ request.form['ballhandling'] }}"></input>
+        <p>Passing</p>
+          <input type="text" 
+                name="year" 
+                placeholder="{{ player['passing']}}" 
+                value="{{ request.form['passing'] }}"></input>
+        <p>Shooting</p>
+          <input type="text" 
+                name="position" 
+                placeholder="{{ player['shooting']}}" 
+                value="{{ request.form['shooting'] }}"></input>
+        <p>Defense</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="{{ player['defense']}}" 
+                value="{{ request.form['defense'] }}"></input>
+      
+        <p>Goal Keeping</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="{{ player['goalkeeping']}}" 
+                value="{{ request.form['goalkeeping'] }}"></input>
+        <p>Fit</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="{{ player['fit']}}" 
+                value="{{ request.form['fit'] }}"></input>
+        <p>Aggression</p>
+          <input type="text" 
+                name="jersey" 
+                placeholder="{{ player['aggression']}}" 
+                value="{{ request.form['aggression'] }}"></input>
+      
+      </div>
+    </div>
+    <div class="edit-button adjust">
+      <button type="submit" class="button"><span class="material-symbols-outlined">
+        save
+        </span> Save</button>
+    </div>
+  </form>
+    {% endif %}
+</main>
+<script>
+    function openTab(evt, id) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(id).style.display = "grid";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+{% endblock %}

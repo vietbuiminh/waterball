@@ -41,8 +41,7 @@ CREATE TABLE coaches (
   password varchar(20) NOT NULL,
   last_accessed datetime NOT NULL DEFAULT '2020-01-01 00:00:00',
   access_level varchar(10) NOT NULL DEFAULT '0000000000',
-  offset INTEGER NOT NULL DEFAULT '-6',
-  avatar varchar(90) DEFAULT ''
+  offset INTEGER NOT NULL DEFAULT '-6'
   -- got_avatar BOOLEAN NOT NULL DEFAULT False,
   -- avatar_url varchar(100) NOT NULL DEFAULT 'placeholder.jpg'
 ) ;
@@ -53,8 +52,8 @@ CREATE TABLE coaches (
 
 
 /*!40000 ALTER TABLE coaches DISABLE KEYS */;
-INSERT INTO coaches VALUES (1, 'Max','Sellers','maxesellers@gmail.com','Y','12MadMax','2023-02-11 04:19:11','0000000000',-5,''),
-(2, 'Viet','Bui','vietbui20@augustana.edu','Y','7Wonders','2023-02-11 04:19:11','0000000000',-5,''), (3, 'Max','Sellers','maxsellers20@augustana.edu','Y','12MadMax','2023-02-11 04:19:11','0000000000',-5,'');
+INSERT INTO coaches VALUES (1, 'Max','Sellers','maxesellers@gmail.com','Y','12MadMax','2023-02-11 04:19:11','0000000000',-5),
+(2, 'Viet','Bui','vietbui20@augustana.edu','Y','7Wonders','2023-02-11 04:19:11','0000000000',-5);
 /*!40000 ALTER TABLE coaches ENABLE KEYS */;
 
 
@@ -178,7 +177,7 @@ INSERT INTO players VALUES (1,1,'Orville','Chan','Fr','Attacker',1,61,87,61,83,6
 --
 DROP TABLE IF EXISTS players_stats;
 CREATE TABLE players_stats (
-  id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   season text,
   player_id text,
   age text,
@@ -265,4 +264,4 @@ CREATE TABLE teams (
   logo text NOT NULL Default '0'
 ) ;
 
-INSERT INTO teams VALUES (1,'St. Charles','St. Charles','Scarecrows',1,'STC','St. Charles','West',62,0,967,'Y',79,69, '0'),(2,'Columbia','Columbia','Crazy Tomatoes',3,'CCT','Columbia','West',76,0,1463,'Y',81,58,'0'),(3,'New Orleans','New Orleans','Swamp Rats',3,'NOS','New Orleans','West',63,0,1531,'Y',81,66, '0'),(4,'Baton Rouge','Baton Rouge','Bananas',3,'BRB','Baton Rouge','West',62,0,1792,'Y',83,70, '0'),(5,'Carlsbad','Carlsbad','Chameleons',3,'CC','Carlsbad','East',66,0,1315,'Y',79,64, '0'),(6,'Quincy','Quincy','Rabid Biting Mules',3,'QRM','Quincy','East',60,0,1527,'Y',79,68,'0'),(7,'Mendon','Mendon','Mushrooms',3,'MM','Mendon','East',59,0,1289,'Y',81,70,'0'),(8,'Antioch','Antioch','Anglerfish',3,'AA','Antioch','East',71,0,1338,'Y',79,66,'0');
+INSERT INTO teams VALUES (1,'St. Charles','St. Charles','Scarecrows',1,'STC','St. Charles','West',62,0,967,'Y',79,69, '0'),(2,'Columbia','Columbia','Crazy Tomatoes',1,'CCT','Columbia','West',76,0,1463,'Y',81,58,'0'),(3,'New Orleans','New Orleans','Swamp Rats',1,'NOS','New Orleans','West',63,0,1531,'Y',81,66, '0'),(4,'Baton Rouge','Baton Rouge','Bananas',1,'BRB','Baton Rouge','West',62,0,1792,'Y',83,70, '0'),(5,'Carlsbad','Carlsbad','Chameleons',1,'CC','Carlsbad','East',66,0,1315,'Y',79,64, '0'),(6,'Quincy','Quincy','Rabid Biting Mules',1,'QRM','Quincy','East',60,0,1527,'Y',79,68,'0'),(7,'Mendon','Mendon','Mushrooms',1,'MM','Mendon','East',59,0,1289,'Y',81,70,'0'),(8,'Antioch','Antioch','Anglerfish',1,'AA','Antioch','East',71,0,1338,'Y',79,66,'0');

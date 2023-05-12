@@ -37,9 +37,11 @@
                 <table class="styled-table index-table glass">
                   <thead>
                       <tr>
-                          <th>School</th>
-                          <th>Conference</th>
-                          <th>Overall</th>
+                          <th align ="center">School</th>
+                          <th align ="center">Conference</th>
+                          <th align ="center">Overall</th>
+                          <th align ="center">Goals Scored</th>
+                          <th align ="center">Goals Allowed</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -52,22 +54,74 @@
                             </a>
                             {{ stand["name"] }}
                           </td>
-                          <td>{{ stand["division"] }}</td>
-                          <td>{{ stand["wins"] }} - {{ stand["losses"] }}</td>
+                          <td align ="center">{{ stand["division"] }}</td>
+                          <td align ="center">{{ stand["wins"] }} - {{ stand["ties"] }} - {{ stand["losses"] }}</td>
+                          <td align ="center">{{ stand["scored"] }}</td>
+                          <td align ="center">{{ stand["against"] }}</td>
                       </tr>
                     {%endfor%}
                   </tbody>
               </table>
             </aside>
+          
           <article>
             <h2>This Week Schedule</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum vero praesentium odio iste aliquam ipsam perferendis explicabo nesciunt voluptate similique doloribus, laborum odit magni expedita omnis. Numquam deleniti rem quia?</p>
-            </article>
-        </section>
+            <section>
+          {% for sched in schedule %}
+          <p>Match {{ sched['match_number'] }}</p>
+          
+          <table class="styled-table glass">
+            <thead>
+                <tr>
+                    <th>School</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in teams %}
+                  {% if sched['home_id'] == t['team_id']  %}
+                    
+                  <tr>
+                        <td>
+                              <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                                
+                              </a>
+                          {% for stand in standings %}
+                            {% if sched['home_id'] == stand['id'] %}
+                              {{ t["name"] }} ({{  stand["wins"]  }} - {{  stand["ties"]  }} - {{  stand["losses"]  }})
+                            {% endif %}
+                          {% endfor %}
+                        </td>
+                      <td align ="center">{{ sched['home_goals'] }}</td>
+                      
+                  {% endif %}
+                {% endfor %}
+                </tr>
+              {% for t in teams %}
+                {% if sched['away_id'] == t['team_id']  %}
+                <tr class="active-row">
+                    <td>
+                      <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                          {% for stand in standings %}
+                            {% if sched['away_id'] == stand['id'] %}
+                              {{ t["name"] }} ({{  stand["wins"]  }} - {{  stand["ties"]  }} - {{  stand["losses"]  }})
+                            {% endif %}
+                          {% endfor %}</td>
+                    <td align ="center">{{ sched['away_goals'] }}</td>
+                </tr>
+                {% endif %}
+              {% endfor %}
+            
+                <!-- and so on... -->
+            </tbody>
+        </table>
+        {% endfor %}
+      </section>
+      </section>
+    </article>      
+        
     </main>
 
 {% endblock %}

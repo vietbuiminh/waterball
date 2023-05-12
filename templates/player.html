@@ -1,0 +1,111 @@
+{% extends 'template.html' %}
+{% block content %}
+<style>
+.header-img {
+  overflow: hidden;
+  background: rgb(66,121,255);
+background: linear-gradient(152deg, rgba(66,121,255,1) 0%, rgba(229,229,247,1) 100%);
+}
+.team-info-grid {
+  opacity: 0;
+  animation: transition-table 0.5s ease-out forwards;
+  animation-delay: 100ms;
+}
+.skills {
+  padding: 0 !important;
+}
+.skills .styled-table {
+  border-radius: var(--border-radius-small);
+  width: 100%;
+}
+.skills .styled-table tbody tr td:first-child {
+  display: revert;
+}
+.skills .styled-table tr{
+  background: none;
+  text-transform: uppercase;
+  font-weight: 200;
+  text-align: center;
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 0px;
+}
+.styled-table th, .styled-table td {
+    padding: 7px 15px;
+}
+.styled-table td {
+  font-size: 2.5em;
+}
+.info-list {
+    grid-column: span 1;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0.8em;
+}
+</style>
+  <section class="header-img adjust">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}">{{ message }}</div>
+  {% endfor %}
+    <div class="team-info-grid adjust">
+      <div class="team-wrapper glass">
+        <img src="{{ url_for('static',filename=player['logo']) }}" alt="player {{ player['last_name'] }}">
+      </div>
+      <style>
+        .team-name-wrapper > * {
+          margin-top: 0;
+          margin-bottom: 0;
+          text-align: center;
+        }
+      </style>
+      <div class="team-name-wrapper glass">
+        <h1>{{ player['first_name'] }} {{ player['last_name'] }} <span style="font-size: 0.8em; color: white;text-shadow: -5px 5px 5px black, 5px 5px 5px black, 5px -5px 5px black, -5px -5px 5px black;">{{ player['jersey'] }}</span></h1>
+      </div>
+      <div class="info-list glass flex">
+            {% if player['age'] == 'Fr' %}
+          <p>Freshman</p>
+          {% elif player['age'] == 'So' %}
+          <p>Sophomore</p>
+          {% elif player['age'] == 'Jr' %}
+          <p>Junior</p>
+          {% elif player['age'] == 'Sr' %}
+          <p>Senior</p>
+          {% else %}
+          <p>TBA</p>
+          {% endif %}
+          <p>Position: {{ player['position'] }}</p>
+      </div>
+      <div class="skills">
+          <table class="styled-table glass">
+            <thead>
+                <tr>
+                  <th colspan="6" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">Player Skills</th>
+                </tr>
+                <tr>
+                    <th>Swimming</th>
+                    <th>Ball Handling</th>
+                    <th>Passing</th>
+                    <th>Shooting</th>
+                    <th>Defense</th>
+                    <th>Goal Keeping</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{% if player['swimming'] == 0 %}-{% else %}{{ player['swimming'] }}{% endif %}</td>
+                    <td>{% if player['ballhandling'] == 0 %}-{% else %}{{ player['ballhandling'] }}{% endif %}</td>
+                    <td>{% if player['passing'] == 0 %}-{% else %}{{ player['passing'] }}{% endif %}</td>
+                    <td>{% if player['shooting'] == 0 %}-{% else %}{{ player['shooting'] }}{% endif %}</td>
+                    <td>{% if player['defense'] == 0 %}-{% else %}{{ player['defense'] }}{% endif %}</td>
+                    <td>{% if player['goalkeeping'] == 0 %}-{% else %}{{ player['goalkeeping'] }}{% endif %}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </section>
+</header>
+<main class="adjust">
+  
+</main>
+{% endblock %}

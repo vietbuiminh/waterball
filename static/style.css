@@ -1,6 +1,6 @@
 :root {
     --font-family: 'Inter', sans-serif;
-    --font-display: 'Bebas Neue', cursive;
+    --font-display: 'Bebas Neue', sans-serif;
     --hero-blue: #386fa4;
     --secondary-blue: #758bfd;
     --accent-yellow: #ff8600;
@@ -83,6 +83,7 @@ section {
   position: relative;
   padding-top: 100px;
   height: 600px;
+  overflow: hidden;
 }
 .overlay-text, .background-gradient, .team-info-grid{
   position: absolute;
@@ -132,6 +133,9 @@ section {
 
 .overlay-text {
   display: grid;
+  opacity: 0;
+  animation: transition-table 0.5s ease-out forwards;
+  animation-delay: 100ms;
 }
 .background-gradient {
   display: grid;
@@ -472,7 +476,8 @@ footer {
     border-radius: 0.5rem;
 }
 .button:hover {
-    transform: scale(1.05);
+  cursor: pointer;
+  transform: scale(1.05);
 }
 .button:active, .button:focus {
     outline: dotted 2px white;
@@ -495,6 +500,106 @@ footer {
     font-weight: 600;
     text-transform: uppercase;
     transition: all 0.2s;
+    border: none;
+}
+.add-button .button {
+  background-color: #d6ffe2;
+  color: #009936;
+  border: solid 1px #009936;
+  padding: 1em 1.5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+}
+.go-back-button .button {
+  padding: 1em 1.5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+}
+
+.add-button .button .material-symbols-outlined, .go-back-button .button .material-symbols-outlined {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.add-button .button:active, .add-button.button:focus {
+    outline: dotted 2px #009936 !important;
+}
+.add-button .button:hover {
+    color: #d6ffe2 !important;
+    transform: translatey(-2px);
+    background-color: #009936 !important;
+}
+.delete-button {
+    display: flex;
+    overflow: hidden;
+    height: 80px;
+    padding: 0px 12px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .edit-button {
+    display: flex;
+    overflow: hidden;
+    height: 80px;
+    padding: 0px 12px;
+    width: 80%;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1em;
+  }
+  .edit-button .button, .delete-button .button {
+    width: fit-content;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+  .edit-button .button .material-symbols-outlined,
+  .delete-button .button .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .delete-button .button {
+    color: #ffd5de;
+    background-color: #970020;
+  }
+  .edit {
+    padding: 10px 20px;
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+    background: lightgray;
+  }
+
+.corner {
+  position: fixed;
+  z-index: 10;
+  bottom: 5%;
+  right: 5%;
 }
   .alert {
     padding: 20px;
@@ -616,10 +721,28 @@ footer {
   color: #303030;
   text-align: left;
 }
+
+/* Sortable tables */
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
 }
+.styled-table td:nth-child(2) a {
+  text-decoration: none;
+  color: var(--hero-blue);
+  transition: 100ms ease;
+}
+.styled-table td:nth-child(2) a:hover {
+  color: var(--accent-yellow);
+}
+
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
 }
@@ -666,6 +789,82 @@ footer {
   animation: transition-table 0.5s ease-out forwards;
   animation-delay: 100ms;
 }
+/* Style the tab */
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  border-left: none;
+  width: 20%;
+  height: calc(100vh - 230px);
+  overflow-y: auto;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  position: relative;
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 20px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: var(--accent-yellow);
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active::after {
+  content: "";
+  position: absolute;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index:-1;
+  background: rgb(255,134,0);
+  background: linear-gradient(107deg, rgba(255,134,0,1) 0%, rgba(255,134,0,0) 67%);
+}
+
+/* Style the tab content */
+.tabwrapper {
+  overflow: hidden;
+  height: calc(100vh - 110px);
+  border: solid 1px #ccc;
+  float: left;
+  padding: 10px 12px;
+  width: 80%;
+  border-left: none;
+  border-right: none;
+  overflow-y: auto;
+}
+.search {
+  position: relative;
+}
+#searchInput {
+  width: calc(100% - 40px);
+  float: right;
+}
+.search .material-symbols-outlined {
+  width: 40px;
+  float: left;
+  font-weight:200;
+  font-size: 20px;
+  padding-top: 5px;
+  opacity: 0.8;
+}
+.search input {
+  background: black;
+  color: white;
+  font-size: 0.95em;
+  padding: 5px 10px !important;
+}
 @keyframes transition-table {
   from {
     opacity: 0;
@@ -674,6 +873,16 @@ footer {
   to {
     opacity: 1;
     transform: translateX(0%);
+  }
+}
+@keyframes transition-table-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 @media only screen and (max-width: 1000px) {

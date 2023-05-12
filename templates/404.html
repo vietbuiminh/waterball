@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+{% block content %}
+  <section class="header-img adjust">
+      <div align='center' style="
+        display: grid;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        ">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{category}}">{{ message }}</div>
+    {% endfor %}
+      <span class="material-symbols-outlined" style="font-size: 200px; text-align:center;">
+      sentiment_sad
+      </span>
+        <h1>404</h1>
+      </div>
+  </section>
+</header>
+<main class="adjust">
+  
+</main>
+{% endblock %}

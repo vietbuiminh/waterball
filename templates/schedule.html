@@ -1,427 +1,62 @@
 {% extends 'template.html' %}
 {% block content %}
-<head>
-<title>Scoreboard</title>
-
-	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-	<meta http-equiv="content-language" content="EN">
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="reply-to" content="admin@olmec.org">
-	<meta name="title" content="Scoreboard">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-
-    
-	<link rel="shortcut icon" href="images/favicon.ico">
-	<link rel="stylesheet" href="css/olmec.css" type="text/css" media="screen">
-
-
-   <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
-  <!-- <script language='javascript' src='js/jquery-1.7.1.min.js' type='text/javascript'></script> -->
-   <!--<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=3.0.1'></script>-->
-   <!--<script>jqcc=jQuery.noConflict(true);</script> -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!--<script language='javascript' src='js/moo121.js' type='text/javascript'></script>-->
-  	<!--<script language='javascript' src='js/moo121m.js' type='text/javascript'></script>-->
-	<!--<script language='javascript' src='js/hover.js' type='text/javascript'></script>-->
-	<script language="javascript" src="js/global.js" type="text/javascript"></script>
-  <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-
-  <script type="text/javascript" src="https://use.typekit.com/awd2hbx.js"></script>
-	<link rel="stylesheet" href="https://use.typekit.net/ncr8zcr.css">
-  <style type="text/css">.tk-adelle{font-family:"adelle-1","adelle-2",serif;}.tk-facitweb{font-family:"facitweb-1","facitweb-2",sans-serif;}</style><style type="text/css">@font-face{font-family:adelle-1;src:url(https://use.typekit.com/af/39c03a/000000000000000000012b41/27/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.com/af/39c03a/000000000000000000012b41/27/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.com/af/39c03a/000000000000000000012b41/27/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:adelle-1;src:url(https://use.typekit.com/af/7e55db/000000000000000000012b35/27/l?subset_id=2&fvd=n8&v=3) format("woff2"),url(https://use.typekit.com/af/7e55db/000000000000000000012b35/27/d?subset_id=2&fvd=n8&v=3) format("woff"),url(https://use.typekit.com/af/7e55db/000000000000000000012b35/27/a?subset_id=2&fvd=n8&v=3) format("opentype");font-weight:800;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:adelle-1;src:url(https://use.typekit.com/af/66a901/000000000000000000012b3d/27/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.com/af/66a901/000000000000000000012b3d/27/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.com/af/66a901/000000000000000000012b3d/27/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:adelle-1;src:url(https://use.typekit.com/af/68baab/000000000000000000012b40/27/l?subset_id=2&fvd=i6&v=3) format("woff2"),url(https://use.typekit.com/af/68baab/000000000000000000012b40/27/d?subset_id=2&fvd=i6&v=3) format("woff"),url(https://use.typekit.com/af/68baab/000000000000000000012b40/27/a?subset_id=2&fvd=i6&v=3) format("opentype");font-weight:600;font-style:italic;font-stretch:normal;font-display:auto;}@font-face{font-family:adelle-1;src:url(https://use.typekit.com/af/170baa/000000000000000000012b2b/27/l?subset_id=2&fvd=n1&v=3) format("woff2"),url(https://use.typekit.com/af/170baa/000000000000000000012b2b/27/d?subset_id=2&fvd=n1&v=3) format("woff"),url(https://use.typekit.com/af/170baa/000000000000000000012b2b/27/a?subset_id=2&fvd=n1&v=3) format("opentype");font-weight:100;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:facitweb-1;src:url(https://use.typekit.com/af/a73079/0000000000000000000132a5/27/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.com/af/a73079/0000000000000000000132a5/27/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.com/af/a73079/0000000000000000000132a5/27/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:facitweb-1;src:url(https://use.typekit.com/af/a59b1f/0000000000000000000132ad/27/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.com/af/a59b1f/0000000000000000000132ad/27/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.com/af/a59b1f/0000000000000000000132ad/27/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-stretch:normal;font-display:auto;}</style><script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-	<link rel="stylesheet" href="https://use.typekit.net/ncr8zcr.css">
-
-
-
-  <!-- from highcharts -->
-<!-- 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
-{% endblock %}
-
-
-
-
-
-
-
-<!--
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try{
-var pageTracker = _gat._getTracker("UA-3289627-1");
-pageTracker._trackPageview();
-} catch(err) {}
-</script>
- -->
-
-  <style>
-		a { color: #0A54A3;	}
-	</style>
-
-</head>
-<body>
-
-<div id="container">
-
 <style>
-
-#rcorners2 {
-	border-radius: 10px;
-	background: #cfcfcf;
-	border: 1px solid black;
-	padding: 5px;
-	width: 115px;
-	height: 135px;
-}
-
-.site-updates2 {
-	background-color: red;
-	color: #FFF;
-	padding: 5px 10px;
-        color:  white;
-}
-
-.site-updates2 a {
-	background-color: red;
-	color: #FFF;
-	padding: 5px 10px;
-}
-
-	.coachesPollDeadline {
-		background-color: #8F3985;
-		color: #FFF;
-		padding: 5px 10px;
-	}
-
-
-
+  .tool-bar{
+    justify-content: center;
+  }
 </style>
+<!-- <section class="header-img adjust">
+</section> -->
+    </header>
+    <main class="adjust paddingtop">
+      <div class="tool-bar adjust-browse">
+          <a href="/schedule/this-week/" class="tool-item hover active-item">THIS WEEK</a>
+          <a href="/schedule/season/" class="tool-item hover">SEASON</a>
+      </div>
+        <h1>{{ title }}</h1>
+        <section>
+          {% for sched in schedule %}
+          <p>Match {{ sched['match_number'] }}</p>
+          
+          <table class="styled-table glass">
+            <thead>
+                <tr>
+                    <th>School</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for t in teams %}
+                {% if sched['home_id'] == t['team_id']  %}
+                <tr>
+                      <td>
+                            <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                              
+                            </a>
+                            {{ t["name"] }}
+                      </td>
+                    <td>{{ sched['home_goals'] }}</td>
+                {% endif %}
+              {% endfor %}
+                </tr>
+              {% for t in teams %}
+                {% if sched['away_id'] == t['team_id']  %}
+                <tr class="active-row">
+                    <td>
+                      <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                      {{ t['name'] }}</td>
+                    <td>{{ sched['away_goals'] }}</td>
+                </tr>
+                {% endif %}
+              {% endfor %}
+            
+                <!-- and so on... -->
+            </tbody>
+        </table>
+        {% endfor %}
+      </section>
+    </main>
 
-<div class="coachesPollDeadline"><div class="name">Session 12 Coaches Poll deadline in 23 hours and 54 minutes</div></div><div class="deadline"><div class="name">DEADLINE - Friday May 5th this week.  12 noon USA Central and 6pm London Time</div></div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="league">
-
-		<div style="float: left; width: 1020px;">
-			<div style="padding: 10px 10px 5px 10px;">
-
-				<div class="tabs" style="float: right;">
-         <span style="float: right;  text-align:right;">
-<a href="http://www.olmec.org/mswl-united" class="off">MSWL UNITED</a><a href="http://www.olmec.org/mswl-united-2" class="off">MSWL U2</a><a href="http://www.olmec.org/tmvl" class="on" style="background-color: #475a62;">TMVL</a>          <br>
-<span style="color: #a9b9be; font-size: 12px; padding-left: 4px;">Monday, May 1st, 2023 - 04:05:11 PM</span>         </span>
-					<div class="cl">&nbsp;</div>
-				</div>
-
-
-<div> <img src="images/volleyball.png" align="left" alt="ball" width="40" height="40">
-                 <span id="league-title" style="padding-left: 4px;"> TMVL&nbsp;</span><span style="color: #a9b9be; font-family: adelle-1, adelle-2; font-weight: 100;
-            font-size: 24px;"> Season 8 // Scoreboard</span>
-				</div>
-			</div>
-		</div>
-
-
-    <div style="float: left; width: 260px; padding-top: 20px;">
-            Logo
-		</div>
-
-		<div class="cl">&nbsp;</div>
-
-
-	</div>
-	<div id="league-navigation">
-
-        <a href="index.php" style="border-right: 1px solid #808080;">Home</a>
-
-        <a href="blog.php?type=latest" style="border-right: 1px solid #808080;">Blog</a>
-
-        <a href="coaches.php?type=directory" style="border-right: 1px solid #808080;">Coaches</a>
-        <!-- <a href='forum_threads.php' style='border-right: 1px solid #808080;'>Forum</a>
-        <a href='history.php?type=1' style='border-right: 1px solid #808080;'>History</a> -->
-<a href="logout.php" style="border-right: 1px solid #808080;">Logout</a><a href="orders.php" style="border-right: 1px solid #808080;">Orders</a>        <a href="rankings.php" style="border-right: 1px solid #808080;">Rankings</a>
-				
-				        <a href="recruiting.php?type=entry" style="border-right: 1px solid #808080;">Recruiting</a>
-				
-
-        <a href="files/rules.pdf" style="border-right: 1px solid #808080;">Rules</a>
-<a href="scoreboard.php?matchnumber=44&amp;status=nospoil&amp;div=all" style="border-right: 1px solid #808080;">Scores</a>
-        <a href="standings.php?type=L" style="border-right: 1px solid #808080;">Standings</a>
-        <a href="stats.php?type=teamstats" style="border-right: 1px solid #808080;">Stats</a>
-	      <a href="support.php" style="border-right: 1px solid #808080;">Support</a>
-<a href="teams.php?teamid=1&amp;type=landing" style="border-right: 1px solid #808080;">Teams</a><a href="user_info.php" style="border-right: 1px solid #808080;">User</a>				<a href="waitlist.php" style="border-right: 1px solid #808080;">Waitlist</a>
-				<!-- <a href='comments_wall.php'>Wall</a> -->
-
-
-				<div class="cl">&nbsp;</div>
-
-	</div>
-
-
-
-<!--
-	<div class='bar-alert' style='font-size: 16px;'>
-		Auction 2 (Pre-Season) Bids due Saturday, May 22nd
-	</div>
--->
-		<div>
-      <table style="width:1020px;">
-       <tbody><tr>
-       <td class="logos" style="width:775px; align:left;">
-<table><tbody><tr><td colspan="8" style="text-align: center;">
-								<b>PAC 8 Conference</b></td><td colspan="8" style="border-left: 1px solid black; text-align: center;">
-								<b>SEC Conference</b></td></tr><tr><td class="no1"><a href="teams.php?teamid=13&amp;type=landing"> <img src="images/logos/menu/13.png" border="0" title="Albuquerque Raccoons" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=5&amp;type=landing"> <img src="images/logos/menu/5.png" border="0" title="Carlsbad Chameleons" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=21&amp;type=landing"> <img src="images/logos/menu/21.png" border="0" title="Denali Angry Wolves" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=18&amp;type=landing"> <img src="images/logos/menu/18.png" border="0" title="Mat-Su Moose" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=4&amp;type=landing"> <img src="images/logos/menu/4.png" border="0" title="San Diego Swordfish" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=28&amp;type=landing"> <img src="images/logos/menu/28.png" border="0" title="San Jose Shrimps" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=16&amp;type=landing"> <img src="images/logos/menu/16.png" border="0" title="Santa Clara Chihuahuas" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=30&amp;type=landing"> <img src="images/logos/menu/30.png" border="0" title="Tucson Spikin Saguaros" height="44" width="44"></a></td><td class="no1" style="border-left:  1px solid black"><a href="teams.php?teamid=8&amp;type=landing"> <img src="images/logos/menu/8.png" border="0" title="Antioch Anglerfish" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=15&amp;type=landing"> <img src="images/logos/menu/15.png" border="0" title="Baton Rouge Bananas" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=24&amp;type=landing"> <img src="images/logos/menu/24.png" border="0" title="Kentucky Panthers" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=26&amp;type=landing"> <img src="images/logos/menu/26.png" border="0" title="Merritt Island Manatees" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=22&amp;type=landing"> <img src="images/logos/menu/22.png" border="0" title="Nashville Red Pandas" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=3&amp;type=landing"> <img src="images/logos/menu/3.png" border="0" title="New Orleans Swamp Rats" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=19&amp;type=landing"> <img src="images/logos/menu/19.png" border="0" title="Starkville Bloodhounds" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=14&amp;type=landing"> <img src="images/logos/menu/14.png" border="0" title="Teutopolis Twisters" height="44" width="44"></a></td></tr><tr><td colspan="8" style="border-top: 1px solid black; text-align: center;">
-								<b>BIG 8 Conference</b></td>
-								<td colspan="8" style="border-left: 1px solid black; border-top: 1px solid black; text-align: center;">
-								<b>Big East Conference</b></td></tr><tr><td class="no1"><a href="teams.php?teamid=31&amp;type=landing"> <img src="images/logos/menu/31.png" border="0" title="Ames Artichokes" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=27&amp;type=landing"> <img src="images/logos/menu/27.png" border="0" title="Arlington Anteaters" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=2&amp;type=landing"> <img src="images/logos/menu/2.png" border="0" title="Columbia Crazy Tomatoes" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=20&amp;type=landing"> <img src="images/logos/menu/20.png" border="0" title="Dallas Bulldogs" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=12&amp;type=landing"> <img src="images/logos/menu/12.png" border="0" title="Pekin Pushin Peas" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=23&amp;type=landing"> <img src="images/logos/menu/23.png" border="0" title="Portland Lumberjacks" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=6&amp;type=landing"> <img src="images/logos/menu/6.png" border="0" title="Quincy Rabid Biting Mules" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=1&amp;type=landing"> <img src="images/logos/menu/1.png" border="0" title="St. Charles Scarecrows" height="44" width="44"></a></td><td class="no1" style="border-left:  1px solid black"><a href="teams.php?teamid=25&amp;type=landing"> <img src="images/logos/menu/25.png" border="0" title="Alton Screaming Eagles" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=9&amp;type=landing"> <img src="images/logos/menu/9.png" border="0" title="Burlington Bullfrogs" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=29&amp;type=landing"> <img src="images/logos/menu/29.png" border="0" title="Cincinnati Winged Hogs" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=17&amp;type=landing"> <img src="images/logos/menu/17.png" border="0" title="Manitowoc Gargoyles" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=7&amp;type=landing"> <img src="images/logos/menu/7.png" border="0" title="Mendon Mushrooms" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=11&amp;type=landing"> <img src="images/logos/menu/11.png" border="0" title="Schenectady Squirrels" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=10&amp;type=landing"> <img src="images/logos/menu/10.png" border="0" title="Sheboygan Vampire Bats" height="44" width="44"></a></td><td class="no1"><a href="teams.php?teamid=32&amp;type=landing"> <img src="images/logos/menu/32.png" border="0" title="Spokane Sasquatches" height="44" width="44"></a></td></tr></tbody></table>       </td>
-<td align="left"><a href="teams.php?teamid=1&amp;type=landing"> <img src="images/logos/team-page/1.png" border="0" title="St. Charles" height="100" width="100"></a></td><td><div id="rcorners2"><div class="cornerBox"><h2>DASHBOARD</h2><h3><b>Session 12</b></h3><h3><img src="images/ok.png" align="left" width="15">Orders</h3><h3><img src="images/ok.png" align="left" width="15">Recruiting</h3><h3><img src="images/ok.png" align="left" width="15">40 RP-Media Bonus</h3></div></div></td>
-       </tr>
-      </tbody></table>
-		</div>
-
-    		<div class="c1r3">
-			<div style="float: left; margin-top: 4px;"></div>
-			<form method="post" id="short">
-			<div id="shortcut_response" style="float: left;"></div>
-			</form>
-		</div>
-
-<div class="content">
-<div class="c1r5-wide-scoreboard b1">
-	<div class="inner" style="min-height: 800px;">
-
-<!--START ENTRY-->
-	<div class="content-break">
-	<p></p>
-<table><tbody><tr><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Feb 19</h2><h3><b>Session 1</b></h3><h3><a href="scoreboard.php?matchnumber=1&amp;status=nospoil&amp;div=all">1</a> <a href="scoreboard.php?matchnumber=2&amp;status=nospoil&amp;div=all">2</a> <a href="scoreboard.php?matchnumber=3&amp;status=nospoil&amp;div=all">3</a> <br> <br> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Feb 26</h2><h3><b>Session 2</b></h3><h3><a href="scoreboard.php?matchnumber=4&amp;status=nospoil&amp;div=all">4</a> <a href="scoreboard.php?matchnumber=5&amp;status=nospoil&amp;div=all">5</a> <a href="scoreboard.php?matchnumber=6&amp;status=nospoil&amp;div=all">6</a> <br> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Mar 05</h2><h3><b>Session 3</b></h3><h3><a href="scoreboard.php?matchnumber=7&amp;status=nospoil&amp;div=all">7</a> <a href="scoreboard.php?matchnumber=8&amp;status=nospoil&amp;div=all">8</a> <a href="scoreboard.php?matchnumber=9&amp;status=nospoil&amp;div=all">9</a> <br> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Mar 12</h2><h3><b>Session 4</b></h3><h3><a href="scoreboard.php?matchnumber=10&amp;status=nospoil&amp;div=all">10</a> <a href="scoreboard.php?matchnumber=11&amp;status=nospoil&amp;div=all">11</a> <a href="scoreboard.php?matchnumber=12&amp;status=nospoil&amp;div=all">12</a> <br> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Mar 19</h2><h3><b>Session 5</b></h3><h3><a href="scoreboard.php?matchnumber=13&amp;status=nospoil&amp;div=all">13</a> <a href="scoreboard.php?matchnumber=14&amp;status=nospoil&amp;div=all">14</a> <a href="scoreboard.php?matchnumber=15&amp;status=nospoil&amp;div=all">15</a> <br> <a href="scoreboard.php?matchnumber=16&amp;status=nospoil&amp;div=all">16</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Mar 26</h2><h3><b>Session 6</b></h3><h3><a href="scoreboard.php?matchnumber=17&amp;status=nospoil&amp;div=all">17</a> <a href="scoreboard.php?matchnumber=18&amp;status=nospoil&amp;div=all">18</a> <a href="scoreboard.php?matchnumber=19&amp;status=nospoil&amp;div=all">19</a> <br> <a href="scoreboard.php?matchnumber=20&amp;status=nospoil&amp;div=all">20</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Apr 02</h2><h3><b>Session 7</b></h3><h3><a href="scoreboard.php?matchnumber=21&amp;status=nospoil&amp;div=all">21</a> <a href="scoreboard.php?matchnumber=22&amp;status=nospoil&amp;div=all">22</a> <a href="scoreboard.php?matchnumber=23&amp;status=nospoil&amp;div=all">23</a> <br> <a href="scoreboard.php?matchnumber=24&amp;status=nospoil&amp;div=all">24</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Apr 09</h2><h3><b>Session 8</b></h3><h3><a href="scoreboard.php?matchnumber=25&amp;status=nospoil&amp;div=all">25</a> <a href="scoreboard.php?matchnumber=26&amp;status=nospoil&amp;div=all">26</a> <a href="scoreboard.php?matchnumber=27&amp;status=nospoil&amp;div=all">27</a> <br> <a href="scoreboard.php?matchnumber=28&amp;status=nospoil&amp;div=all">28</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Apr 16</h2><h3><b>Session 9</b></h3><h3><a href="scoreboard.php?matchnumber=29&amp;status=nospoil&amp;div=all">29</a> <a href="scoreboard.php?matchnumber=30&amp;status=nospoil&amp;div=all">30</a> <a href="scoreboard.php?matchnumber=31&amp;status=nospoil&amp;div=all">31</a> <br> <a href="scoreboard.php?matchnumber=32&amp;status=nospoil&amp;div=all">32</a> <a href="scoreboard.php?matchnumber=33&amp;status=nospoil&amp;div=all">33</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Apr 23</h2><h3><b>Session 10</b></h3><h3><a href="scoreboard.php?matchnumber=34&amp;status=nospoil&amp;div=all">34</a> <a href="scoreboard.php?matchnumber=35&amp;status=nospoil&amp;div=all">35</a> <a href="scoreboard.php?matchnumber=36&amp;status=nospoil&amp;div=all">36</a> <br> <a href="scoreboard.php?matchnumber=37&amp;status=nospoil&amp;div=all">37</a> <a href="scoreboard.php?matchnumber=38&amp;status=nospoil&amp;div=all">38</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>Apr 30</h2><h3><b>Session 11</b></h3><h3><a href="scoreboard.php?matchnumber=39&amp;status=nospoil&amp;div=all">39</a> <a href="scoreboard.php?matchnumber=40&amp;status=nospoil&amp;div=all">40</a> <a href="scoreboard.php?matchnumber=41&amp;status=nospoil&amp;div=all">41</a> <br> <a href="scoreboard.php?matchnumber=42&amp;status=nospoil&amp;div=all">42</a> <a href="scoreboard.php?matchnumber=43&amp;status=nospoil&amp;div=all">43</a> </h3></div></div></td><td><div class="cornerBox"><div class="corner TL"></div><div class="corner TR"></div><div class="corner BL"></div><div class="corner BR"></div><div class="cornerBoxInner"><h2>May 06</h2><h3><b>Session 12</b></h3><h3><a href="scoreboard.php?matchnumber=44&amp;status=nospoil&amp;div=all">44</a> <a href="scoreboard.php?matchnumber=45&amp;status=nospoil&amp;div=all">45</a> <a href="scoreboard.php?matchnumber=46&amp;status=nospoil&amp;div=all">46</a> <br> <a href="scoreboard.php?matchnumber=47&amp;status=nospoil&amp;div=all">47</a> <a href="scoreboard.php?matchnumber=48&amp;status=nospoil&amp;div=all">48</a> </h3></div></div></td></tr></tbody></table><div id="cHomeScoresHeader" align="center"><nobr><b>Match 44 - May 6, 2023</b></nobr><br><b>Conference League Round 14</b><nobr>&nbsp;&nbsp;&nbsp;<a href="scoreboard.php?matchnumber=44&amp;status=nospoil&amp;div=all" class="cHomeLinkSmall"><br>No Spoilers!</a>&nbsp;&nbsp;&nbsp;<a href="scoreboard.php?matchnumber=44&amp;status=show&amp;div=all" class="cHomeLinkSmall">Show Results</a></nobr></div><div id="cUpperCase" align="center"></div><table border="0" width="900" cellpadding="3" cellspacing="0"><tbody><tr valign="top"><td width="300"><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">PAC 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/16.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Santa Clara Chihuahuas</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Martyn Hathaway</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/30.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Tucson Spikin Saguaros</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Amy Sellers</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Tucson leads series 5-4</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=353">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Tucson</span></div></div><div style="padding: 2px;"><div><div class="note"><div class="fl sp"><img src="images/photo_36.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">i need this one! Let's fill up the Spike Dome for the final home game!</div><div style="color: #666; font-size: 11px;">Amy (Tucson) <nobr>04/30 - 2:54 PM</nobr></div></div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">PAC 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/21.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Denali Angry Wolves</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Andy Shaw</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/18.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Mat-Su Moose</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Bryce Kalmbach</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Mat-Su leads series 6-4</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=354">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Mat-Su</span></div></div><div style="padding: 2px;"><div><div class="note"><div class="fl sp"><img src="images/photo_27.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">Lost our last three Pac8 games and I think it may be four after this match. </div><div style="color: #666; font-size: 11px;">Andy (Denali) <nobr>05/01 - 10:34 AM</nobr></div></div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">PAC 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/28.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">San Jose Shrimps</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Vick Hall</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/5.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Carlsbad Chameleons</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Phil McIntosh</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">San Jose leads series 6-5</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=355">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Carlsbad</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">PAC 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/13.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Albuquerque Raccoons</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Kelsey Kownick</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/4.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">San Diego Swordfish</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Matt White</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Albuquerque leads series 10-6</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=356">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at San Diego</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">SEC // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/15.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Baton Rouge Bananas</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Mike Halpin</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/3.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">New Orleans Swamp Rats</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Kevin Martin</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">New Orleans leads series 10-9</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=357">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at New Orleans</span></div></div><div style="padding: 2px;"><div><div class="note"><div class="fl sp"><img src="images/photo_41.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">Sorry Kevin, but go Baton Rouge. I need 5th !</div><div style="color: #666; font-size: 11px;">Matthew (Kentucky) <nobr>04/30 - 8:26 PM</nobr></div></div><div class="note"><div class="fl sp"><img src="images/photo_11.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">I'd be happy to deliver for you, Matthew, but it's going to be an uphill struggle with this away match.</div><div style="color: #666; font-size: 11px;">Mike (Baton Rouge) <nobr>04/30 - 11:00 PM</nobr></div></div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">SEC // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/22.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Nashville Red Pandas</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Roy Rolsten</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/19.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Starkville Bloodhounds</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Mike Jaffe</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Nashville leads series 7-2</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=358">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Starkville</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">SEC // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/24.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Kentucky Panthers</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Matthew Fowler</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/8.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Antioch Anglerfish</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Rob Peterson</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Series even at 4-4</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=359">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Antioch</span></div></div><div style="padding: 2px;"><div><div class="note"><div class="fl sp"><img src="images/photo_6.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">Last conference match of the season. If we win, we can get back to .500 in conference play.</div><div style="color: #666; font-size: 11px;">Rob (Antioch) <nobr>04/30 - 6:28 PM</nobr></div></div><div class="note"><div class="fl sp"><img src="images/photo_41.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">A win here and a loss for New Orleans potentially puts us in 5th for season. All the best Rob.</div><div style="color: #666; font-size: 11px;">Matthew (Kentucky) <nobr>04/30 - 8:25 PM</nobr></div></div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">SEC // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/14.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Teutopolis Twisters</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Mike Cabral</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/26.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Merritt Island Manatees</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Mark Creasey</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Teutopolis leads series 5-3</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=360">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Merritt Island</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div></div></div></div></div></div></div></div></div></td><td width="300"><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/23.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Portland Lumberjacks</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Paul Cockayne</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/2.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Columbia Crazy Tomatoes</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Steve Turner</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Columbia leads series 7-0</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=361">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Columbia</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/20.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Dallas Bulldogs</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Craig Bucknall</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/31.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Ames Artichokes</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Colin Scott</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Ames leads series 5-3</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=362">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Ames</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/1.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">St. Charles Scarecrows</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Max Sellers</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/27.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Arlington Anteaters</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;David Campbell</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">St. Charles leads series 7-2</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=363">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Arlington</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG 8 // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/12.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Pekin Pushin Peas</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Roger Mendonça</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/6.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Quincy Rabid Biting Mules</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Allan Sellers</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Quincy leads series 14-3</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=364">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Quincy</span></div></div><div style="padding: 2px;"><div><div class="note"><div class="fl sp"><img src="images/photo_40.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">There was a time when this match up saw my C average team up against a host of A+ Mules.  This feels almost even… </div><div style="color: #666; font-size: 11px;">Roger (Pekin) <nobr>04/30 - 3:41 PM</nobr></div></div><div class="note"><div class="fl sp"><img src="images/photo_40.jpg" border="0" width="25" alt="" style="display: block;"></div><div style="color: #000; font-size: 12px;">Although I will be solely playing for XP. Honest 😁</div><div style="color: #666; font-size: 11px;">Roger (Pekin) <nobr>05/01 - 12:27 PM</nobr></div></div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG EAST // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/17.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Manitowoc Gargoyles</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Derek Purvis</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/25.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Alton Screaming Eagles</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;James White</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Alton leads series 9-1</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=365">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Alton</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG EAST // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/11.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Schenectady Squirrels</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Christer Kallin</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/29.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Cincinnati Winged Hogs</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;James Tucker</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Schenectady leads series 5-3</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=366">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Cincinnati</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG EAST // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/9.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Burlington Bullfrogs</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Aires Martins Jr</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/32.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Spokane Sasquatches</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Jason Halpin</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Series even at 5-5</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=367">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Spokane</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div><div class="content-block" style="margin-bottom: 14px;"><div style="padding: 6px; border-left: 1px solid #DDD; border-top: 1px solid #DDD; border-right: 3px solid #CCC; border-bottom: 3px solid #CCC; font-size: 15px;"><div><table><tbody><tr class="score-bg"><td colspan="9">BIG EAST // CONFERENCE&nbsp;</td></tr><tr><td style="margin-right: 8px; "><img src="images/blank.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/7.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Mendon Mushrooms</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;Pierre van Rossum</span></td><td colspan="9">&nbsp;</td></tr><tr><td style="margin-right: 8px;"><img src="images/green_check_mark.gif" width="20" height="20"></td><td style="float: left; margin-right: 8px;"><img src="images/logos/menu/10.png" border="0" width="60" style="display: block;"></td><td class="smaller-font-80"><span style="font-family: oswald, sans-serif; font-weight: 500; font-size: 1.5em;">Sheboygan Vampire Bats</span><br>
-                        <span style="font-family: poppins, sans-serif; font-weight: 400; font-size: 1.15em; font-style: normal;">&nbsp;&nbsp;John Holden</span></td><td colspan="9">&nbsp;</td></tr></tbody></table><div class="cl">&nbsp;</div></div><div style="font-size: 11px; padding-bottom: 4px;  text-align: center;">
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em; float: left;">Sheboygan leads series 10-5</span>
-                      <span style="font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;"><a href="match_report.php?type=preview&amp;schedule_id=368">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preview</a></span><span style="float: right; font-family: oswald, sans-serif; font-weight: 300; font-size: 1.15em;">at Sheboygan</span></div></div><div style="padding: 2px;"><div><div class="cl">&nbsp;</div></div></div></div></div></div></div></div></div></div></div></td></tr></tbody></table><nobr>
-
-
-
-  <!--END ENTRY-->
-
-</nobr></div><nobr>
-
-<script>
-window.addEvent('domready', function() {
-var pComment1 = new Fx.Slide('comment-add-1',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment2 = new Fx.Slide('comment-1',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-1').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-1').setStyle('display', 'block'); 
-pComment1.toggle(); 
-pComment2.toggle(); 
-}); 
-var pComment3 = new Fx.Slide('comment-add-2',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment4 = new Fx.Slide('comment-2',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-2').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-2').setStyle('display', 'block'); 
-pComment3.toggle(); 
-pComment4.toggle(); 
-}); 
-var pComment5 = new Fx.Slide('comment-add-3',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment6 = new Fx.Slide('comment-3',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-3').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-3').setStyle('display', 'block'); 
-pComment5.toggle(); 
-pComment6.toggle(); 
-}); 
-var pComment7 = new Fx.Slide('comment-add-4',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment8 = new Fx.Slide('comment-4',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-4').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-4').setStyle('display', 'block'); 
-pComment7.toggle(); 
-pComment8.toggle(); 
-}); 
-var pComment9 = new Fx.Slide('comment-add-5',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment10 = new Fx.Slide('comment-5',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-5').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-5').setStyle('display', 'block'); 
-pComment9.toggle(); 
-pComment10.toggle(); 
-}); 
-var pComment11 = new Fx.Slide('comment-add-6',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment12 = new Fx.Slide('comment-6',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-6').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-6').setStyle('display', 'block'); 
-pComment11.toggle(); 
-pComment12.toggle(); 
-}); 
-var pComment13 = new Fx.Slide('comment-add-7',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment14 = new Fx.Slide('comment-7',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-7').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-7').setStyle('display', 'block'); 
-pComment13.toggle(); 
-pComment14.toggle(); 
-}); 
-var pComment15 = new Fx.Slide('comment-add-8',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment16 = new Fx.Slide('comment-8',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-8').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-8').setStyle('display', 'block'); 
-pComment15.toggle(); 
-pComment16.toggle(); 
-}); 
-var pComment17 = new Fx.Slide('comment-add-9',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment18 = new Fx.Slide('comment-9',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-9').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-9').setStyle('display', 'block'); 
-pComment17.toggle(); 
-pComment18.toggle(); 
-}); 
-var pComment19 = new Fx.Slide('comment-add-10',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment20 = new Fx.Slide('comment-10',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-10').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-10').setStyle('display', 'block'); 
-pComment19.toggle(); 
-pComment20.toggle(); 
-}); 
-var pComment21 = new Fx.Slide('comment-add-11',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment22 = new Fx.Slide('comment-11',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-11').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-11').setStyle('display', 'block'); 
-pComment21.toggle(); 
-pComment22.toggle(); 
-}); 
-var pComment23 = new Fx.Slide('comment-add-12',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment24 = new Fx.Slide('comment-12',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-12').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-12').setStyle('display', 'block'); 
-pComment23.toggle(); 
-pComment24.toggle(); 
-}); 
-var pComment25 = new Fx.Slide('comment-add-13',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment26 = new Fx.Slide('comment-13',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-13').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-13').setStyle('display', 'block'); 
-pComment25.toggle(); 
-pComment26.toggle(); 
-}); 
-var pComment27 = new Fx.Slide('comment-add-14',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment28 = new Fx.Slide('comment-14',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-14').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-14').setStyle('display', 'block'); 
-pComment27.toggle(); 
-pComment28.toggle(); 
-}); 
-var pComment29 = new Fx.Slide('comment-add-15',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment30 = new Fx.Slide('comment-15',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-15').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-15').setStyle('display', 'block'); 
-pComment29.toggle(); 
-pComment30.toggle(); 
-}); 
-var pComment31 = new Fx.Slide('comment-add-16',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).hide(); 
-var pComment32 = new Fx.Slide('comment-16',{ duration: 200, transition: Fx.Transitions.linear.easeOut }).show(); 
-$('comment-open-16').addEvent('click', function(e){ 
-e.stop(); 
-$('comment-add-16').setStyle('display', 'block'); 
-pComment31.toggle(); 
-pComment32.toggle(); 
-}); 
-}); 
-</script>
-
-
-<div class="cl">&nbsp;</div>
-
-</nobr></div><nobr>
-</nobr></div><nobr>
-
-
-
-</nobr></div><nobr>
-
-
-
-</nobr></div></body>
+{% endblock %}
