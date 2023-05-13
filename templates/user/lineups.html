@@ -123,11 +123,13 @@
 </style>
 <main>
   {% for team in teams %}
+    <section class="split">
+      <aside class="standing">
   <table class="styled-table glass">
                 <thead>
                     <tr>
-                        <th colspan="14"
-                            style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">
+                        <th colspan="16"
+                            style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.1em;">
                             Lineup</th>
                     </tr>
                     <tr>
@@ -146,11 +148,16 @@
                         <th>Fit</th>
                         <th>Aggression</th>
                         <th>Overall</th>
+                      {% for sched in schedule %}
+                        {% if sched['home_id'] == team['team_id'] %}
+                        <th>Match {{ sched['match_number'] }}</th>
+                        {% endif %}
+                      {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for player in players %}
-                    {% if current_user.id == team['coach_id'] %}
+                    {% if player['team_id'] == team['team_id'] %}
                     <tr>
                         <td>
                             <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
@@ -168,6 +175,15 @@
                         <td>{{ player['fit'] }}</td>
                         <td>{{ player['aggression'] }}</td>
                         <td>{{ player['overall'] }}</td>
+                        <td> <div class="dropdown">
+                          <button class="dropbtn">Dropdown</button>
+                          <div class="dropdown-content">
+                            <a href="#">Link 1</a>
+                            <a href="#">Link 2</a>
+                            <a href="#">Link 3</a>
+                          </div>
+                        </div></td>
+                        <td> </td>
                     </tr>
                     {% endif %}
                     {% endfor %}
@@ -176,7 +192,44 @@
         </div>
         
     </div>
+      </aside>
+      <aside class="standing">
+  <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Lineup</th>
+                    </tr>
+                    <tr>
+                        
+                      {% for sched in schedule %}
+                        {% if sched['home_id'] == team['team_id'] %}
+                        <th>Match {{ sched['match_number'] }}</th>
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    {% if player['team_id'] == team['team_id'] %}
+                    <tr>
+                        <td>
+                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
+                                    player['first_name'] }} {{ player['last_name'] }}</a></div>
+                        </td>
+                        <td>{{ player['age'] }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+      </aside>
   {% endfor %}
+        
+    </section>
 </main>
 <script>
     function openTab(evt, id) {
@@ -216,5 +269,6 @@
             }
         }
     }
+  
 </script>
 {% endblock %}

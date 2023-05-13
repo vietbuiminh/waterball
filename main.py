@@ -189,8 +189,9 @@ def deletePlayer(id):
       'SELECT DISTINCT t.team_id, t.name FROM lineups AS l INNER JOIN teams AS t ON l.team_id == t.team_id WHERE (l.cf_player == ? OR l.cd_player == ? OR l.lw_player == ? OR l.rw_player == ? OR l.ld_player == ? OR l.rd_player == ? OR l.gk_player == ?)',
       (id, id, id, id, id, id, id)).fetchall()
     if len(teams) > 0:
-      flash('Please remove them before removing the player out of your roster.',
-            'error')
+      flash(
+        'Please remove them before removing the player out of your roster.',
+        'error')
       for team in teams:
         flash(
           f"{player['first_name']} {player['last_name']} is already in {team['name']}'s lineups.",
@@ -200,12 +201,13 @@ def deletePlayer(id):
       conn.execute('DELETE FROM players WHERE player_id = ?', (id, ))
       flash(
         f"{player['first_name']} {player['last_name']} has been removed from your team's roster",
-        'error')
+        'correct')
       conn.commit()
       conn.close()
       return redirect(url_for('profile_players'))
     return redirect(url_for('profile_players'))
-    
+
+
 @app.route('/<int:id>/player/edit', methods=('GET', 'POST'))
 @login_required
 def editPlayer(id):
@@ -215,12 +217,11 @@ def editPlayer(id):
     (id, )).fetchone()
   title = player['first_name'] + " " + player['last_name']
   if request.method == "POST":
-    flash('TEST')
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     age = request.form['age']
     jersey = request.form['jersey']
-    
+
     if first_name == "":
       first_name = player['first_name']
     if last_name == "":
@@ -230,13 +231,13 @@ def editPlayer(id):
     if jersey == "":
       jersey = player['jersey']
     conn = get_db_connection()
-    
+
     conn.execute(
       'UPDATE players SET first_name = ?, last_name = ?, age = ?, jersey = ? WHERE player_id = ?',
       (first_name, last_name, age, jersey, id))
     conn.commit()
     flash('Player updated successfully!', 'correct')
-    return(redirect(url_for('profile_players')))
+    return (redirect(url_for('profile_players')))
   return render_template('player_edit.html',
                          title=title,
                          player=player,
@@ -411,22 +412,21 @@ def edit_profile():
 @login_required
 def profile_lineups():
   conn = get_db_connection()
-  teams = conn.execute('SELECT * FROM teams').fetchall()
+  teams = conn.execute('SELECT * FROM teams WHERE coach_id = ?;',
+                       (current_user.id, )).fetchall()
   players = conn.execute('SELECT * FROM players').fetchall()
+  schedule = conn.execute(
+    'SELECT * FROM schedule where played = "N" LIMIT 8').fetchall()
   conn.close()
-  if request.method == 'POST':
-    return redirect(url_for('edit_profile'))
   return render_template("user/lineups.html",
                          title="Your lineup",
                          teams=teams,
-                         players=players)
+                         players=players, schedule=schedule)
 
 
 @app.route('/profile/schedule/', methods=('GET', 'POST'))
 @login_required
 def profile_schedule():
-  if request.method == 'POST':
-    return redirect(url_for('edit_profile'))
   return render_template("user/schedule.html", title="Your schedule")
 
 
@@ -443,8 +443,7 @@ def schedule():
     'SELECT teams.* FROM schedule INNER JOIN teams ON teams.team_id = schedule.away_id'
   ).fetchall()
   conn.close()
-  if request.method == 'POST':
-    return redirect(url_for('edit_profile'))
+
   return render_template("schedule.html",
                          title="This Week's schedule",
                          awayschedule=awayschedule,
@@ -456,22 +455,51 @@ def schedule():
 @app.route('/profile/standings/', methods=('GET', 'POST'))
 @login_required
 def profile_standings():
-  if request.method == 'POST':
-    return redirect(url_for('edit_profile'))
   return render_template("user/standings.html", title="Customize Standings")
 
 
 @app.route('/profile/players/add/', methods=('GET', 'POST'))
 @login_required
 def add_player():
-  return render_template('user/add_player.html', title="Add Player")
+  conn = get_db_connection()
+  teams = conn.execute('SELECT * FROM teams WHERE coach_id = ?', (current_user.id,)).fetchall()
+  conn.close()
+  
+  if request.method == 'POST':
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    age = request.form['age']
+    position = request.form['position']
+    jersey = request.form['jersey']
+    if first_name + last_name + age + position + jersey == '':
+      flash('Please fill out at least one information about the player')
+    else:
+      if first_name == '':
+        first_name = 'First'
+      if last_name == '':
+        last_name = 'Last'
+      if age == '':
+        age = 'NA'
+      if position == '':
+        position = 'TBA'
+      if jersey == '':
+        jersey = 0
+      print('OK')
+      team_id = request.form['team_id']
+      print(team_id)
+      conn = get_db_connection()
+      conn.execute('INSERT INTO players(team_id, first_name, last_name, age, position, jersey) VALUES (?, ?, ?, ?, ?,?)', (team_id, first_name, last_name, age, position, jersey))
+      conn.commit()
+      id = conn.execute('SELECT player_id FROM players ORDER BY player_id DESC LIMIT 1').fetchone()
+      conn.close()
+      flash('New Player added')
+      return redirect(url_for('editPlayer', id=id['player_id']))
+  return render_template('user/add_player.html', title="Add Player", teams=teams)
 
 
 @app.route('/profile/players/', methods=('GET', 'POST'))
 @login_required
 def profile_players():
-  if request.method == 'POST':
-    return redirect(url_for('edit_profile'))
   if current_user.is_authenticated:
     conn = get_db_connection()
     players = conn.execute(

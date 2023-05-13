@@ -10,9 +10,9 @@
           <!-- {{ url_for('static', filename='placeholder.jpg') }} -->
           <img src="{{ current_user.avatar }}" alt="avatar place holder for {{ current_user.first_name }}"/>
         </div>
+        {% if title == 'Edit Profile' %}
         <form method="POST" class="classic-info">
           <div class="info-window">
-            {% if title == 'Edit Profile' %}
               <style>
                 input[name="first_name"], input[name="last_name"] {
                   font-size: 1.5em;
@@ -46,16 +46,26 @@
                     id="userName" 
                     value="{{ request.form['twitter_username'] }}"></input>
           </div>
-          <div class="edit-button">
-            <button type="submit" class="button">Save Changes</button>
+          <div class="setting-button">
+            <button type="submit" class="button">
+              <span class="material-symbols-outlined">
+              save
+              </span>
+              Save Changes</button>
             </div>
             {% else %}
+        <form action="{{ url_for('edit_profile') }}" class="classic-info">
+          <div class="info-window">
             <h2>{{ current_user.first_name }} {{ current_user.last_name }}</h2>
             <p>{{ current_user.email }}</p>
             <p>{{ current_user.last_accessed }}</p>
           </div>
-          <div class="edit-button">
-            <button href="/profile/edit-profile/" type="submit" class="button">Edit profile</button>
+          <div class="setting-button">
+            <button href="/profile/edit-profile/" type="submit" class="button">
+              <span class="material-symbols-outlined">
+              manage_accounts
+              </span>
+              Edit profile</button>
           </div>
             {% endif %}
           

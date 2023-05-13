@@ -462,11 +462,11 @@ footer {
     max-width: 350px;
     text-align: center;
 }
-  input[type=text],input[type=inputBox],input[type=password], textarea {
+  select, input[type=text],input[type=inputBox],input[type=password], textarea {
     margin-bottom: 0.5rem;
     width: 100%;
     padding: 11px 8px;
-    font-size: 12px;
+    font-size: 1em;
     box-sizing: border-box;
     background-color: none;
     border: none;
@@ -502,19 +502,31 @@ footer {
     transition: all 0.2s;
     border: none;
 }
+.setting-button .button {
+  background-color: white;
+  color: black;
+  border: solid 1px grey;
+  padding: 1em 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: auto;
+    width: fit-content;
+}
 .add-button .button {
   background-color: #d6ffe2;
   color: #009936;
   border: solid 1px #009936;
   padding: 1em 1.5em;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5em;
-  margin: 0;
+  width: fit-content;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    gap: 0.5em;
 }
 .go-back-button .button {
   padding: 1em 1.5em;
@@ -532,7 +544,9 @@ footer {
   font-size: 1.5em;
   font-weight: bold;
 }
-
+.setting-button .button:active, .setting-button.button:focus {
+    outline: dotted 2px #ccc !important;
+}
 .add-button .button:active, .add-button.button:focus {
     outline: dotted 2px #009936 !important;
 }
@@ -540,6 +554,11 @@ footer {
     color: #d6ffe2 !important;
     transform: translatey(-2px);
     background-color: #009936 !important;
+}
+.setting-button .button:hover {
+    color: #ffffff !important;
+    transform: translatey(-2px);
+    background-color: #383838 !important;
 }
 .delete-button {
     display: flex;
@@ -579,6 +598,7 @@ footer {
     gap: 0.5em;
 }
   .edit-button .button .material-symbols-outlined,
+  .setting-button .button .material-symbols-outlined,
   .delete-button .button .material-symbols-outlined {
     font-size: 20px;
   }
@@ -601,6 +621,7 @@ footer {
   bottom: 5%;
   right: 5%;
 }
+
   .alert {
     padding: 20px;
     margin: 5px;
