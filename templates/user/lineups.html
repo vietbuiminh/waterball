@@ -2,13 +2,25 @@
 {% block content %}
 <a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
 <a href="/profile/lineups/" class="tool-item hover active-item ">lineups</a>
-<a href="/profile/schedule/" class="tool-item hover">schedule</a>
 <a href="/profile/standings/" class="tool-item hover">standings</a>
 <a href="/profile/players/" class="tool-item hover">players</a>
 </div>
 </div>
 </header>
 <style>
+  select, input[type=text],input[type=inputBox],input[type=password], textarea {
+    margin-bottom: 0.5rem;
+    width: 90%;
+    padding: 11px 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: none;
+    border: none;
+    border-bottom: 1px solid black;
+    color: black;
+    transition: 150ms ease;
+    border-radius: 0.5rem;
+}
   .grid-table {
     overflow-x: auto;
     animation: transition-table-up 0.5s ease-out forwards;
@@ -24,17 +36,33 @@
   .styled-table th, .styled-table td {
     padding: 5px 10px;
   }
-  .styled-table th:nth-child(n + 6), .styled-table td:nth-child(n + 6) {
-    max-width: 40px;
+
+  .styled-table td {
+    height: 10px;
   }
-  .styled-table th:nth-child(n + 6) {
+  
+  .styled-table th:first-child, .styled-table td:first-child {
+    max-width: 100px;
+  }
+  .styled-table th:nth-child(2), .styled-table td:nth-child(2) {
+    max-width: 60px;
+  }
+  .styled-table th:nth-child(n + 3), .styled-table td:nth-child(n + 3) {
+    max-width: 30px;
+  }
+  .styled-table th:nth-child(n + 3) {
     height: 76px;
     white-space: nowrap;
     transform: translate(-2px, 21px) rotate(315deg);
     width: 30px;
   }
-  .styled-table th:last-child, .styled-table td:last-child{
-    max-width: 50px !important;
+  .styled-table th:last-child, .styled-table td:last-child,
+  .styled-table th:nth-last-child(2), .styled-table td:nth-last-child(2){
+    max-width: 300px !important;
+    height: revert;
+    white-space: revert;
+    transform: revert;
+    text-align: center;
   }
   .tablinks a, .tablinks {
     font-family: var(--font-display);
@@ -120,155 +148,267 @@
   .tabwrapper {
     border-top: none;
   }
+  
+  .styled-table td:nth-child(1) a {
+      text-decoration: none;
+      color: var(--hero-blue);
+      transition: 100ms ease;
+  }
+  .styled-table td:nth-child(1) a:hover {
+    color: var(--accent-yellow);
+  }
 </style>
 <main>
-  {% for team in teams %}
-    <section class="split">
-      <aside class="standing">
-  <table class="styled-table glass">
-                <thead>
-                    <tr>
-                        <th colspan="16"
-                            style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.1em;">
-                            Lineup</th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <div>Name</div>
-                        </th>
-                        <th>Age</th>
-                        <th>Position</th>
-                        <th>Jersey</th>
-                        <th>Swimming</th>
-                        <th>Ball Handling</th>
-                        <th>Passing</th>
-                        <th>Shooting</th>
-                        <th>Defense</th>
-                        <th>Goal Keeping</th>
-                        <th>Fit</th>
-                        <th>Aggression</th>
-                        <th>Overall</th>
-                      {% for sched in schedule %}
-                        {% if sched['home_id'] == team['team_id'] %}
-                        <th>Match {{ sched['match_number'] }}</th>
-                        {% endif %}
-                      {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in players %}
-                    {% if player['team_id'] == team['team_id'] %}
-                    <tr>
-                        <td>
-                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
-                                    player['first_name'] }} {{ player['last_name'] }}</a></div>
-                        </td>
-                        <td>{{ player['age'] }}</td>
-                        <td>{{ player['position'] }}</td>
-                        <td>{{ player['jersey'] }}</td>
-                        <td>{{ player['swimming'] }}</td>
-                        <td>{{ player['ballhandling'] }}</td>
-                        <td>{{ player['passing'] }}</td>
-                        <td>{{ player['shooting'] }}</td>
-                        <td>{{ player['defense'] }}</td>
-                        <td>{{ player['goalkeeping'] }}</td>
-                        <td>{{ player['fit'] }}</td>
-                        <td>{{ player['aggression'] }}</td>
-                        <td>{{ player['overall'] }}</td>
-                        <td> <div class="dropdown">
-                          <button class="dropbtn">Dropdown</button>
-                          <div class="dropdown-content">
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
-                          </div>
-                        </div></td>
-                        <td> </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+  <section class="adjust">
+    {% for team in teams %}
+    <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper"><img
+                    class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+        <h2 class="team-style">{{ team['name'] }} {{ team['nickname'] }}</h2>
+    </a>
+    <div class="visualize-match-grid">
+    {% for sched in schedule %}
+      {% if sched['home_id'] == team['team_id'] or sched['away_id'] == team['team_id']%}
+      <div class="a-match">
+      <h3 class="team-style">Match {{ sched['match_number'] }}</h3>
+      <div class="waterpolo-layout">
+        {% for line in lineups %}
+        {% if (line['match_number'] == sched['match_number']) and (line['team_id'] == team['team_id']) %}
+          <div class="goal">
+            {% for player in players %}
+            {% if (player['player_id'] == line['gk_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="right">
+            {% for player in players %}
+            {% if (player['player_id'] == line['rd_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['lw_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="dcenter">
+            {% for player in players %}
+            {% if (player['player_id'] == line['cd_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['cf_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="left">
+            {% for player in players %}
+            {% if (player['player_id'] == line['ld_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['rw_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="mright">
+            {% for player in players %}
+            {% if (player['player_id'] == line['rw_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['ld_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="mleft">
+            {% for player in players %}
+            {% if (player['player_id'] == line['lw_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['rd_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="fcenter">
+            {% for player in players %}
+            {% if (player['player_id'] == line['cf_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="defense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+            {% for player in players %}
+            {% if (player['player_id'] == line['cd_player']) and (player['team_id'] == line['team_id']) %}
+              <a href="{{ url_for('displayPlayer', id=player['player_id']) }}" class="offense">{{ player['jersey'] }}<span class="hovertext">{{ player['last_name']}}</span></a>
+            {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        
-    </div>
-      </aside>
-      <aside class="standing">
-  <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Lineup</th>
-                    </tr>
-                    <tr>
-                        
-                      {% for sched in schedule %}
-                        {% if sched['home_id'] == team['team_id'] %}
-                        <th>Match {{ sched['match_number'] }}</th>
-                        {% endif %}
-                      {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in players %}
-                    {% if player['team_id'] == team['team_id'] %}
-                    <tr>
-                        <td>
-                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{
-                                    player['first_name'] }} {{ player['last_name'] }}</a></div>
-                        </td>
-                        <td>{{ player['age'] }}</td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-    </div>
-      </aside>
+      <form action="{{url_for('reset_lineups', team_id=team['team_id'], match_number=sched['match_number'])}}" class="setting-button" >
+      <button type="submit" class="button" style="
+    margin-right: 0;
+    margin-top: 2%;
+"><span class="material-symbols-outlined">
+          restart_alt
+      </span>Reset Lineups</button>
+    </form>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+      </div>
   {% endfor %}
-        
-    </section>
+    
+  </section>
+  <form method="post">
+  {% for team in teams %}
+    <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper"><img
+                    class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+        <h2 class="team-style">{{ team['name'] }} {{ team['nickname'] }}</h2>
+    </a>
+  <table class="styled-table glass" id="searchTable">
+    <thead>
+        <!-- <tr>
+            <th colspan="16"
+                style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.1em;">
+                Lineup</th>
+        </tr>
+      <tr> -->
+                <th class="search" colspan="20" style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                  <span class="material-symbols-outlined">
+                  search
+                  </span>
+                  <input style="border-radius:13px; color: white;"type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names">
+                </th>
+              </tr>
+        <tr>
+            <th>
+                <div>Name</div>
+            </th>
+            <th>Position</th>
+            <th>Age</th>
+            <th>Jersey</th>
+            <th>Swimming</th>
+            <th>Ball Handling</th>
+            <th>Passing</th>
+            <th>Shooting</th>
+            <th>Defense</th>
+            <th>Goal Keeping</th>
+            <th>Fit</th>
+            <th>Aggression</th>
+            <th>Overall</th>
+          {% for sched in schedule %}
+            {% if sched['home_id'] == team['team_id'] or sched['away_id'] == team['team_id']%}
+            <th>Match {{ sched['match_number'] }}</th>
+            {% endif %}
+          {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in players %}
+        {% if player['team_id'] == team['team_id'] %}
+        <tr>
+            <td><div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{ player['first_name'] }} {{ player['last_name'] }}</a></div></td>
+            <td>{{ player['position'] }}</td>
+            <td>{{ player['age'] }}</td>
+            <td>{{ player['jersey'] }}</td>
+            <td>{{ player['swimming'] }}</td>
+            <td>{{ player['ballhandling'] }}</td>
+            <td>{{ player['passing'] }}</td>
+            <td>{{ player['shooting'] }}</td>
+            <td>{{ player['defense'] }}</td>
+            <td>{{ player['goalkeeping'] }}</td>
+            <td>{{ player['fit'] }}</td>
+            <td>{{ player['aggression'] }}</td>
+            <td>{{ player['overall'] }}</td>
+          {% for sched in schedule %}
+            {% if sched['home_id'] == team['team_id'] or sched['away_id'] == team['team_id']%}
+            <td> 
+              <div class="dropdown">
+                <select name="{{sched['match_number']}}:{{player['player_id']}}" id="{{sched['match_number']}}:{{player['player_id']}}">
+                  <!-- cf_player INTEGER NOT NULL,
+                  cd_player INTEGER NOT NULL,
+                  lw_player INTEGER NOT NULL,
+                  rw_player INTEGER NOT NULL,
+                  ld_player INTEGER NOT NULL,
+                  rd_player INTEGER NOT NULL,
+                  gk_player INTEGER NOT NULL -->
+                  
+                  <option value="B">Bench</option>
+                  {% if player['position'] == 'Attacker' %}
+                  <option value="RW">Right Wing</option>
+                  <option value="LW">Left Wing</option>
+                  <option value="RD">Right Driver</option>
+                  <option value="LD">Left Driver</option>
+                  {% endif %}
+                  {% if (player['position'] == 'CF') or (player['position'] == 'CD') %}
+                  <option value="CD">Center Defender</option>
+                  <option value="CF">Center</option>
+                  {%endif%}
+                  {% if player['position'] == 'GK' %}
+                  <option value="GK">Goal Keeper</option>
+                  {%endif%}
+                </select>
+              </div>
+            </td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+  </table>
+        </div>
+    
+        {% endfor %}
+    <div>
+      <div class="add-button corner">
+      <button type="submit" class="button"><span class="material-symbols-outlined">
+          exit_to_app
+      </span>Submit</button></button>
+      </div>
+    </div>
+    </form>
+    </div>
+    <!-- <div class="corner" style="bottom: 14%;">
+    This is where the reset buttons used to be
+    </div> -->
+    </aside>
+      
 </main>
 <script>
-    function openTab(evt, id) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(id).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
+  document.getElementById("defaultOpen").click();
+function searchTable() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("searchTable");
+  tr = table.getElementsByTagName("tr");
 
-    // Get the element with id="defaultOpen" and click on it
-    document.getElementById("defaultOpen").click();
-    function searchTable() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("searchTable");
-        tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 2; i < tr.length; i++) {
-            a = tr[i].getElementsByTagName("td")[1].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
-            if (a) {
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 2; i < tr.length; i++) {
+    a = tr[i].getElementsByTagName("td")[0].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+    if (a) {
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
     }
-  
+  }
+}
 </script>
+
 {% endblock %}

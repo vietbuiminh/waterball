@@ -2,10 +2,8 @@ import sqlite3
 import random
 
 connection = sqlite3.connect('database.db')
-
 with open('schema1.sql') as f:
   connection.executescript(f.read())
-
 cur = connection.cursor()
 
 cur.execute(
@@ -57,7 +55,7 @@ class Players():
     age = 0
     swimming = 0
     ballhandling = 0
-    passinging = 0
+    passing = 0
     shooting = 0
     defense = 0
     goalkeeping = 0
@@ -96,7 +94,7 @@ class Players():
         val = (intPLAYERID, intTeamId)
         mycursor = connection.cursor()
         mycursor.execute(sql, val)
-        position = mycursor.fetchone()[0]
+        selfposition = mycursor.fetchone()[0]
         print(position)
 
         sql = "SELECT first_name FROM first_name ORDER BY RAND() LIMIT 1"
@@ -165,33 +163,35 @@ class Players():
         val = (jersey, firstname, lastname, year, swimming, ballhandling, passing,
                shooting, defense, aggression, goalkeeping, 0, overall, intPLAYERID, intTeamId)
         mycursor = connection.cursor()
-        mycursor.execute(sql, val)
+        connection.execute(sql, val)
         print(jersey)
         connection.commit()
 
     def setSkills(self, intTeamId, intPLAYERID):
-        sql = "SELECT first_name, last_name, age, position, jersey, swimming, ballhandling, passing, shooting, defense, goalkeeping, fit, aggression, overall FROM players WHERE player_id = ? AND team_id = ?;"
+        print(intTeamId)
+        print(intPLAYERID)
+        sql = "SELECT first_name, last_name, age, position, jersey, swimming, ballhandling, passing, shooting, defense, goalkeeping, fit, aggression, overall FROM players WHERE player_id = ? AND team_id = ?"
         val = (intPLAYERID, intTeamId)
         mycursor = connection.cursor()
-        mycursor.execute(sql, val)
-        nextval = mycursor.fetchone()
-        # for x in nextval:
-        #     print(x)
-        self.first = nextval[0]
+        nextval = mycursor.execute(sql, val).fetchall()
+        for x in nextval:
+          print(x)
+        self.first = nextval[0][0]
         self.player_arr.append(nextval[0])
-        self.last = nextval[1]
-        self.age = nextval[2]
-        self.position = nextval[3]
-        self.jersey = nextval[4]
-        self.swimming = nextval[5]
-        self.ballhandling = nextval[6]
-        self.passinging = nextval[7]
-        self.shooting = nextval[8]
-        self.defense = nextval[9]
-        self.goalkeeping = nextval[10]
-        self.fit = nextval[11]
-        self.aggression = nextval[12]
-        self.overall = nextval[13]
+        self.last = nextval[0][1]
+        self.age = nextval[0][2]
+        self.position = nextval[0][3]
+        self.jersey = nextval[0][4]
+        self.swimming = nextval[0][5]
+        self.ballhandling = nextval[0][6]
+        print(nextval[0][7])
+        self.passing = nextval[0][7]
+        self.shooting = nextval[0][8]
+        self.defense = nextval[0][9]
+        self.goalkeeping = nextval[0][10]
+        self.fit = nextval[0][11]
+        self.aggression = nextval[0][12]
+        self.overall = nextval[0][13]
 
         self.transition_speed = (self.swimming/99) * 1.6
 
@@ -262,15 +262,8 @@ class lineup:
 
         nextval = mycursor.fetchone()
         for x in nextval:
-            print(x)
+          print(x)
         print(nextval[1])
-        self.cf_player = Players(intTeamId, nextval[1])
-        self.cd_player = Players(intTeamId, nextval[2])
-        self.lw_player = Players(intTeamId, nextval[3])
-        self.rw_player = Players(intTeamId, nextval[4])
-        self.ld_player = Players(intTeamId, nextval[5])
-        self.rd_player = Players(intTeamId, nextval[6])
-        self.gk_player = Players(intTeamId, nextval[7])
         lineup_arr = [self.cf_player, self.cd_player, self.lw_player,
                       self.rw_player, self.ld_player, self.rd_player, self.gk_player]
         return lineup_arr
@@ -278,7 +271,6 @@ class lineup:
         #     print(Players(intTeamId, nextval[i]).first)
 
 
-lineup1 = lineup(1, 1)
 
 
 class Teams(object):
@@ -345,25 +337,67 @@ class Teams(object):
             team1, match_number).getLineup(team1, match_number)
 
     def getLineup(self, intTeamId, MatchNumber):
-        sql = "SELECT lineup_id, cf_player, cd_player, lw_player, rw_player, ld_player, rd_player, gk_player FROM lineups WHERE match_number = ? AND team_id = ?;"
+        connection = sqlite3.connect('database.db')
+        sql = "SELECT lineup_id, cf_player, cd_player, lw_player, rw_player, ld_player, rd_player, gk_player FROM lineups WHERE match_number = ? AND team_id = ?"
         val = (MatchNumber, intTeamId)
+        print(MatchNumber)
+        print(intTeamId)
         mycursor = connection.cursor()
         mycursor.execute(sql, val)
-        # print(f"{mycursor.fetchone()[7]}")
 
         nextval = mycursor.fetchone()
-        for x in nextval:
-            print(x)
-        print(nextval[1])
-        self.cf_player = Players(intTeamId, nextval[1])
-        self.cd_player = Players(intTeamId, nextval[2])
-        self.lw_player = Players(intTeamId, nextval[3])
-        self.rw_player = Players(intTeamId, nextval[4])
-        self.ld_player = Players(intTeamId, nextval[5])
-        self.rd_player = Players(intTeamId, nextval[6])
-        self.gk_player = Players(intTeamId, nextval[7])
+        print(nextval)
+        # for x in nextval:
+        #     print(x)
+        # print(nextval[1])
+        if nextval[1] == 0:
+          sql = "SELECT player_id FROM players WHERE position = ? AND team_id = ? ORDER BY RANDOM() LIMIT 1"
+          val = ("CF", intTeamId)
+          mycursor = connection.cursor()
+          mycursor.execute(sql, val)
+          newval = mycursor.fetchone()
+          self.cf_player = Players(intTeamId, int(newval[0]))
+        else:
+          self.cf_player = Players(intTeamId, nextval[1])
+        if nextval[2] == 0:
+          sql = "SELECT player_id FROM players WHERE position = ? AND team_id = ? ORDER BY RANDOM() LIMIT 1"
+          val = ("CD", intTeamId)
+          mycursor = connection.cursor()
+          mycursor.execute(sql, val)
+          newval = mycursor.fetchone()
+          self.cd_player = Players(intTeamId, int(newval[0]))
+        else:
+          self.cd_player = Players(intTeamId, nextval[2])
+        if nextval[3] == 0:
+          sql = "SELECT player_id FROM players WHERE position = ? AND team_id = ? ORDER BY RANDOM() LIMIT 4"
+          val = ("Attacker", intTeamId)
+          mycursor = connection.cursor()
+          mycursor.execute(sql, val)
+          newval = mycursor.fetchall()
+          print(newval)
+          self.lw_player = Players(intTeamId, int(newval[0][0]))
+          self.rw_player = Players(intTeamId, int(newval[1][0]))
+          self.ld_player = Players(intTeamId, newval[2][0])
+          self.rd_player = Players(intTeamId, newval[3][0])
+        else:
+          self.lw_player = Players(intTeamId, nextval[3])
+          self.rw_player = Players(intTeamId, nextval[4])
+          self.ld_player = Players(intTeamId, nextval[5])
+          self.rd_player = Players(intTeamId, nextval[6])
+        if nextval[7] == 0:
+          sql = "SELECT player_id FROM players WHERE position = ? AND team_id = ? ORDER BY RANDOM() LIMIT 1"
+          val = ("GK", intTeamId)
+          mycursor = connection.cursor()
+          mycursor.execute(sql, val)
+          newval = mycursor.fetchone()
+          print(newval)
+          self.gk_player = Players(intTeamId, int(newval[0]))
+        else:
+          print(nextval)
+          self.gk_player = Players(intTeamId, nextval[7])
         lineup_arr = [self.cf_player, self.cd_player, self.lw_player,
                       self.rw_player, self.ld_player, self.rd_player, self.gk_player]
+        mycursor.close()
         return lineup_arr
 
     def swim(self):
@@ -1078,7 +1112,6 @@ class Session(object):
             mycursor = connection.cursor()
             mycursor.execute(sql)
             nextval = mycursor.fetchone()
-            
             match_num = nextval[0]
             if nextval[0] == self.match_number+1:
                 self.match_number+=1

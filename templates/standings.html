@@ -15,28 +15,34 @@
       </div>
         <h1>{{ title }}</h1>
         <section>
-          {% for stan in stand %}
-          <p>{{ stan['division'] }}</p>
-          {% endfor %}
-          <table class="styled-table glass">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Points</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Dom</td>
-                    <td>6000</td>
-                </tr>
-                <tr class="active-row">
-                    <td>Melissa</td>
-                    <td>5150</td>
-                </tr>
-                <!-- and so on... -->
-            </tbody>
-        </table>
+          <table class="styled-table index-table glass">
+                  <thead>
+                      <tr>
+                          <th align ="center">School</th>
+                          <th align ="center">Conference</th>
+                          <th align ="center">Overall</th>
+                          <th align ="center">Goals Scored</th>
+                          <th align ="center">Goals Allowed</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for stand in standings %}
+                      <tr>
+                          <td>
+                            <a href="{{ url_for('displayTeam', id=stand['id']) }}" class="team-logo-wrapper">
+                                <img class="grey-filter" src="{{ url_for('static',filename=stand['logo']) }}" alt="{{ stand['id'] }}">
+                              
+                            </a>
+                            {{ stand["name"] }}
+                          </td>
+                          <td align ="center">{{ stand["division"] }}</td>
+                          <td align ="center">{{ stand["wins"] }} - {{ stand["ties"] }} - {{ stand["losses"] }}</td>
+                          <td align ="center">{{ stand["scored"] }}</td>
+                          <td align ="center">{{ stand["against"] }}</td>
+                      </tr>
+                    {%endfor%}
+                  </tbody>
+              </table>
       </section>
     </main>
 

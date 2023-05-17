@@ -1,0 +1,313 @@
+{% extends 'template.html' %}
+{% block content %}
+<style>
+  .styled-table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  td .button .material-symbols-outlined {
+    font-size: 15px;
+}
+  td .button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: rgba(0,0,0,0);
+    color: grey;
+    border-radius: 10px;
+}
+  .grid-table {
+    overflow-x: auto;
+    animation: transition-table-up 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+  .tablinks a, .tablinks {
+    font-family: var(--font-display);
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .tabteam {
+    height: 35px !important;
+  }
+  .team-style {
+    text-align: center;
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.8em;
+    color: black;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .team-logo-wrapper h2 {
+    transition: .25s;
+  }
+  .team-logo-wrapper .grey-filter {
+    -webkit-transition: .25s -webkit-filter linear;
+    -moz-transition: .25s -moz-filter linear;
+    -moz-transition: .25s filter linear;
+    -ms-transition: .25s -ms-filter linear;
+    -o-transition: .25s -o-filter linear;
+    transition: .25s filter linear, .25s -webkit-filter linear;
+  }
+  .team-logo-wrapper:hover h2, .team-logo-wrapper:hover .grey-filter{
+    color: var(--secondary-blue);
+    filter: revert;
+  }
+  .appstyle {
+    position:fixed;
+    width:100%;
+  }
+  footer{
+    position: fixed;
+    width: 20%;
+    bottom:0;
+    border-right: solid 1px #ccc;
+    max-height: 200px;
+  }
+  .team-display {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+  .team-card {
+    padding: 20px;
+    width: 300px;
+    border-radius: var(--border-radius-small);
+  }
+  .team-card .team-logo-wrapper {
+    flex-direction: column;
+    height: 100px !important;
+  }
+  .team-card .team-logo-wrapper .team-style {
+    font-size: revert;
+  }
+</style>
+</header>
+    <main class="paddingtop appstyle">
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, '0')" id="defaultOpen">
+          <a class="team-logo-wrapper tabteam">
+          <span class="material-symbols-outlined">
+            all_inclusive
+          </span>Coaches
+             </a>
+        </button>
+          <button class="tablinks" onclick="openTab(event, '1')">
+            <a class="team-logo-wrapper tabteam">
+            <span class="material-symbols-outlined">
+              all_inclusive
+            </span>Teams
+               </a>
+          </button>
+          <button class="tablinks" onclick="openTab(event, '2')">
+            <a class="team-logo-wrapper tabteam">
+            <span class="material-symbols-outlined">
+              all_inclusive
+            </span>Players
+               </a>
+          </button>
+      </div>
+      <div class="tabwrapper">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+          <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+        <div class="grid-table tabcontent" id="0">
+          <h2 class="team-style">Coaches</h2>
+          <table class="styled-table glass">
+            <thead>
+                <!-- <tr>
+                  <th colspan="6" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em;">Player Skills</th>
+                </tr> -->
+                <tr>
+                    <th>No.</th>
+                    <th>Coaches</th>
+                    <th>Email</th>
+                    <th>Admin</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for coach in coaches %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ coach['first_name'] }} {{ coach['last_name'] }}</td>
+                <td>{{ coach['email'] }}</td>
+                <td>{{ coach['admin'] }}</td>
+                <td>
+                  <a href="" class="button">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  {% if coach['admin'] == 'N' %}
+                  <form action="{{ url_for('delete_profile', id=coach['coach_id']) }}" class="" method="POST">
+                    <button type="submit" class="button" onclick="return confirm('Are you sure you want to delete this your profile?')">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                      </button>
+                  </form>
+                  {%endif%}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="grid-table tabcontent" id="1">
+          <h2 class="team-style">Teams</h2>
+          <form method='POST'>
+            <div class="team-display">
+            {% for team in teams %}
+            <div class="team-card glass">
+              <a href="{{ url_for('displayTeam', id=team['team_id']) }}" class="team-logo-wrapper"><img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ team['name'] }}">
+              <h2 class="team-style">{{ team['name'] }} {{ team['nickname'] }}</h2>
+              </a>
+              <p>Coach: </p>
+              <select name="team{{ team['team_id'] }}" id="team{{ team['team_id'] }}">
+                {% for coach in coaches %}
+                {% if coach['coach_id'] == team['coach_id'] %}
+                <option value="{{ coach['coach_id'] }}">{{ coach['coach_id'] }}: {{ coach['first_name'] }} {{ coach['last_name'] }}</option>
+                {% endif %}
+                {% endfor %}
+                {% for coach in coaches %}
+                {% if coach['coach_id'] != team['coach_id'] %}
+                <option value="{{ coach['coach_id'] }}">{{ coach['coach_id'] }}: {{ coach['first_name'] }} {{ coach['last_name'] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>  
+            </div>
+            {% endfor %}
+            </div>
+            <div class="add-button">
+              <button type="submit" class="button glass" style="margin-left:auto;margin-bottom: 1em;">
+              <span class="material-symbols-outlined">
+                save
+              </span>Save Changes</button>
+            </div>
+          </form>
+          <form>
+            <div class="setting-button">
+              <button type="submit" class="button glass" style="margin-left:auto;">
+              <span class="material-symbols-outlined">
+                add
+              </span>New Team</button>
+            </div>
+          </form>
+        </div>
+        <div class="grid-table tabcontent" id="2">
+          <h2 class="team-style">All Players</h2>
+          <table class="styled-table glass" class="sortable" id="searchTable">
+          <thead>
+              <tr>
+                <th class="search" colspan="13" style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                  <span class="material-symbols-outlined">
+                  search
+                  </span>
+                  <input style="border-radius:13px;"type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names">
+                </th>
+              </tr>
+              <tr>
+                  <th>No.</th>
+                  <th><div>Name</div></th>
+                  <th>Team</th>
+                  <th>Position</th>
+                  <th>Year</th>
+                  <th>Edit</th>
+                  <th>Remove</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for player in players %}
+              <tr>
+                  <td>{{ loop.index }}</td>
+                  <td><div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{ player['first_name'] }} {{ player['last_name'] }}</a></div></td>
+                  <td align ="center">{{ player['team_id'] }}</td>
+                  <td align ="center">{{ player["position"] }}</td>
+                  <td align ="center">{{ player["age"] }}</td>
+                <td>
+                  <a href="" class="button">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  <form action="{{ url_for('deletePlayer', id=player['player_id']) }}" class="" method="POST">
+                    <button type="submit" class="button" onclick="return confirm('Are you sure you want to delete this player?')">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                      </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </main>
+<script>
+  function openTab(evt, id) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(id).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+  // Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+function searchTable() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("searchTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 2; i < tr.length; i++) {
+    a = tr[i].getElementsByTagName("td")[1].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+    if (a) {
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+{% endblock %}

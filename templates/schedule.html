@@ -9,54 +9,103 @@
 </section> -->
     </header>
     <main class="adjust paddingtop">
-      <div class="tool-bar adjust-browse">
+      <!-- <div class="tool-bar adjust-browse">
           <a href="/schedule/this-week/" class="tool-item hover active-item">THIS WEEK</a>
           <a href="/schedule/season/" class="tool-item hover">SEASON</a>
-      </div>
+      </div> -->
         <h1>{{ title }}</h1>
-        <section>
-          {% for sched in schedule %}
-          <p>Match {{ sched['match_number'] }}</p>
-          
-          <table class="styled-table glass">
+        <section class="week-schedule">
+          {% for i in range(1, matchnumber) %}
+          <table class="game-table styled-table glass">
             <thead>
-                <tr>
-                    <th>School</th>
-                    <th>Score</th>
-                </tr>
+              <tr>
+                <th colspan="5" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; font-size: 10px;padding: 6px 15px;">
+                  Match {{ i }}
+                </th>
+              </tr>
             </thead>
-            <tbody>
-              {% for t in teams %}
-                {% if sched['home_id'] == t['team_id']  %}
-                <tr>
-                      <td>
-                            <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
-                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
-                              
-                            </a>
-                            {{ t["name"] }}
-                      </td>
-                    <td>{{ sched['home_goals'] }}</td>
-                {% endif %}
-              {% endfor %}
-                </tr>
-              {% for t in teams %}
-                {% if sched['away_id'] == t['team_id']  %}
-                <tr class="active-row">
-                    <td>
-                      <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
-                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
-                      {{ t['name'] }}</td>
-                    <td>{{ sched['away_goals'] }}</td>
-                </tr>
-                {% endif %}
-              {% endfor %}
             
-                <!-- and so on... -->
+            <tbody>
+              {% for sched in schedule %}
+              {% if sched['match_number'] == i %}
+                <tr>
+                  {% if sched['home_id'] < sched['away_id'] %}
+                  {% for t in teams %}
+                  {% if sched['home_id'] == t['team_id'] %}
+                  <td>
+                    <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                      
+                    </a>
+                    {{ t["name"] }}
+                  </td>
+                  {% if sched['home_goals'] > sched['away_goals'] %}
+                  <td class="win">{{ sched['home_goals'] }}</td>
+                  {% elif sched['home_goals'] < sched['away_goals']%}
+                  <td class="loose">{{ sched['home_goals'] }}</td>
+                  {% else %}
+                    <td>{{ sched['home_goals'] }}</td>
+                  {% endif %}
+                  {% endif %}
+                  {% if sched['away_id'] == t['team_id'] %}
+                  {% if sched['home_goals'] > sched['away_goals'] %}
+                  <td class="loose">{{ sched['away_goals'] }}</td>
+                  {% elif sched['home_goals'] < sched['away_goals']%}
+                  <td class="win">{{ sched['away_goals'] }}</td>
+                  {% else %}
+                    <td>{{ sched['away_goals'] }}</td>
+                  {% endif %}
+                  <td>
+                        <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                        {{ t['name'] }}</td>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% for t in teams|reverse %}
+                  {% if sched['home_id'] == t['team_id'] %}
+                  
+                  <td>
+                    <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                      
+                    </a>
+                    {{ t["name"] }}
+                  </td>
+                  {% if sched['home_goals'] > sched['away_goals'] %}
+                  <td class="win">{{ sched['home_goals'] }}</td>
+                  {% elif sched['home_goals'] < sched['away_goals']%}
+                  <td class="loose">{{ sched['home_goals'] }}</td>
+                  {% else %}
+                    <td>{{ sched['home_goals'] }}</td>
+                  {% endif %}
+                  {% endif %}
+                  {% if sched['away_id'] == t['team_id'] %}
+                  {% if sched['home_goals'] > sched['away_goals'] %}
+                  <td class="loose">{{ sched['away_goals'] }}</td>
+                  {% elif sched['home_goals'] < sched['away_goals']%}
+                  <td class="win">{{ sched['away_goals'] }}</td>
+                  {% else %}
+                    <td>{{ sched['away_goals'] }}</td>
+                  {% endif %}
+                  <td>
+                        <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                        {{ t['name'] }}</td>
+                  
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+                    
+                </tr>
+                    <td><a href="{{ url_for('schedule_boxscore', id=sched['schedule_id']) }}" link="team-logo-wrapper">boxscore</a> </td>
+              {% endif %}
+              {% endfor %}
             </tbody>
+          
         </table>
         {% endfor %}
-      </section>
+        </section>
     </main>
 
 {% endblock %}

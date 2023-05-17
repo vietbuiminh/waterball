@@ -78,7 +78,104 @@ section {
     padding-bottom: 2%;
     position: relative;
 }
+.goal {
+  outline: solid 3px white;
+  outline-offset: 2px;
+  grid-area: goal;
+}
+.right {
+  grid-area: right;
+}
+.dcenter {
+  grid-area: dcenter;
+}
+.left {
+  grid-area: left;
+}
+.mright {
+  grid-area: mright;
+}
+.mleft {
+  grid-area: mleft;
+}
+.fcenter{
+  grid-area: fcenter;
+}
+.waterpolo-layout div {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  min-width: 100px;
+}
+.waterpolo-layout {
+  background-color: #9ceaef;
+  display: grid;
+  grid-template-areas: 
+    ". . goal . ."
+    "right . dcenter . left"
+    " . mright . mleft ."
+    ". . fcenter . .";
+  border-radius: var(--border-radius-small);
+  align-items: center;
+  justify-items: center;
+  border: 2px solid #07beb8;
+}
+.waterpolo-layout div a {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  transition: 0.25s ease;
+  position: relative;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+.waterpolo-layout div a:hover {
+  opacity: 0.8;
+}
+.defense {
+  background-color: #3c1642;
+  color: white;
+  border: solid 2px white;
+  transform: translate(15px,10px);
+}
+.offense {
+  background-color: var(--accent-yellow);
+  color: black;
+  border: solid 2px black;
+  transform: translate(-15px,-10px);
+}
 
+.waterpolo-layout div a .hovertext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  font-display: var(--font-display) !important;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  transition: 0.25s ease;
+  position: absolute;
+  z-index: 1;
+  transform: translate(20px, -20px);
+}
+
+.waterpolo-layout div a:hover .hovertext {
+  visibility: visible;
+  opacity: 1 !important;
+}
+.visualize-match-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1em;
+  align-items: center;
+}
 .header-img {
   position: relative;
   padding-top: 100px;
@@ -415,6 +512,7 @@ nav ul li a.menu-active {
 .split {
   display: grid;
   gap: 2em;
+  grid-template-columns: 1fr auto;
 }
 .split article {
   grid-column: 1;
@@ -621,7 +719,6 @@ footer {
   bottom: 5%;
   right: 5%;
 }
-
   .alert {
     padding: 20px;
     margin: 5px;
@@ -742,7 +839,43 @@ footer {
   color: #303030;
   text-align: left;
 }
-
+.game-table tbody tr td {
+  text-align: center;
+}
+.game-table tbody tr td:first-child, .game-table tbody tr td:last-child {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: 1em;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: none !important;
+  }
+.game-table tbody tr td:nth-child(2), 
+.game-table tbody tr td:nth-child(3), 
+.game-table tbody tr td:nth-child(2),
+.game-table tbody tr td:nth-child(3) {
+  font-size: 2em;
+  font-weight: 800;
+}
+.game-table tbody tr td:last-child .team-logo-wrapper {
+  height: 48px;
+  justify-content: start;
+  opacity: .6;
+  gap: 10px;
+  transition: .25s;
+}
+.game-table tbody tr:last-of-type {
+    border-bottom: none !important;
+}
+.win {
+  color: #4c8577;
+}
+.loose {
+  color: #fe5f55;
+}
 /* Sortable tables */
 table.sortable thead {
     background-color:#eee;
@@ -810,6 +943,12 @@ table.sortable thead {
   animation: transition-table 0.5s ease-out forwards;
   animation-delay: 100ms;
 }
+.week-schedule {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+  }
 /* Style the tab */
 .tab {
   float: left;
@@ -819,6 +958,7 @@ table.sortable thead {
   height: calc(100vh - 230px);
   overflow-y: auto;
 }
+
 
 /* Style the buttons that are used to open the tab content */
 .tab button {

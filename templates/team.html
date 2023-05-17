@@ -11,7 +11,6 @@
       </div>
       <div class="info-list glass flex">
         <p>Coming from {{ team['city'] }}</p>
-        <p>Coach: {{ coach['first_name'] }} {{ coach['last_name'] }}</p>
         <p>{{ team['division'] }}</p>
         <!-- short_name varchar(30) NOT NULL,
   division varchar(100) DEFAULT NULL,
@@ -24,16 +23,443 @@
         <p>{{ team['short_name'] }}</p>
         <p>cp: {{ team['cp'] }}</p>
         <p>cp used: {{ team['cp_used'] }}</p>
-        <p>overall: {{ team['overall'] }}</p>
-        <p>agg: {{ team['aggression'] }}</p>
+        <p>overall: {{ "%.2f"|format(team['overall']) }}</p>
+        <p>agg: {{ "%.2f"|format(team['aggression']) }}</p>
       </div>
-      <div class="glass">
-        Lorem ipsum
+      <style>
+        .avatar {
+            height: 50px;
+            width: 50px;
+            margin: 0;
+            padding: 0;    
+        }
+        .coachdisplay {
+          display: grid;
+          grid-template-columns: auto auto;
+          align-items: center;
+        }
+      </style>
+      <div class="coachdisplay glass">
+        <div class="avatar">
+          <img src="{{ coach['avatar'] }}" alt="avatar place holder for Ryan">
+        </div>
+        <div>
+          <h2>Coach</h2>
+          <p>{{ coach['first_name'] }} {{ coach['last_name'] }}</p>
+        </div>
       </div>
     </div>
   </section>
 </header>
-<main class="adjust">
-  
+<main class="">
+  <style>
+    .grid-table {
+        overflow-x: auto;
+        animation: transition-table-up 0.5s ease-out forwards;
+        animation-delay: 100ms;
+    }
+
+    .tab button {
+        padding: 5px 16px;
+    }
+    .styled-table {
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .styled-table > *{
+      font-size: 0.8em;
+    }
+    .styled-table th, .styled-table td {
+      padding: 5px 10px;
+    }
+    .styled-table th:nth-child(n + 4), .styled-table td:nth-child(n + 4) {
+      max-width: 40px;
+    }
+    .styled-table th:nth-child(n + 4) {
+      height: 76px;
+      white-space: nowrap;
+      transform: translate(-2px, 21px) rotate(315deg);
+      width: 30px;
+    }
+    .styled-table th:last-child, .styled-table td:last-child{
+      max-width: 50px !important;
+    }
+    .styled-table td a {
+        text-decoration: none;
+        color: var(--hero-blue);
+        transition: 100ms ease;
+    }
+    .styled-table td a:hover {
+      color: var(--accent-yellow);
+    }
+
+    .tablinks a,
+    .tablinks {
+        text-transform: uppercase;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 0.8em;
+        justify-content: start;
+        gap: 0.5em;
+    }
+
+    .team-logo-wrapper {
+        height: 52px !important;
+        align-items: center;
+        flex: auto;
+        justify-content: center;
+        opacity: 0.9;
+        transition: .25s;
+        text-decoration: none;
+    }
+    .tab {
+        width: 20%;
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+    }
+    .add-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .game-table tbody tr td:first-child {
+      display: revert !important;
+    }
+    .game-table tbody tr td:nth-child(2), .game-table tbody tr td:last-child {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        font-family: var(--font-display);
+        font-size: 2em;
+        width: 200px;
+        font-weight: 300;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: none !important;
+      }
+    .game-table tbody tr td:nth-child(3), 
+    .game-table tbody tr td:nth-child(4), 
+    .game-table tbody tr td:nth-child(3),
+    .game-table tbody tr td:nth-child(4) {
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .game-table tbody tr td:last-child .team-logo-wrapper,.game-table tbody tr td:nth-child(2) .team-logo-wrapper {
+      gap: 10px;
+      transition: .25s;
+      opacity: 1;
+      justify-content: space-between !important;
+    }
+</style>
+  <div class="tab">
+        <button class="tablinks" onclick="openTab(event, '0')" id="defaultOpen">
+            <a class="team-logo-wrapper tabteam">
+                <span class="material-symbols-outlined">
+                    atr
+                </span>Team Roster
+            </a>
+        </button>
+        <button class="tablinks" onclick="openTab(event, '1')">
+            <a class="team-logo-wrapper tabteam">
+                <span class="material-symbols-outlined">
+                    skip_next
+                </span>Next Games
+            </a>
+        </button>
+        <button class="tablinks" onclick="openTab(event, '2')">
+            <a class="team-logo-wrapper tabteam">
+                <span class="material-symbols-outlined">
+                    skip_previous
+                </span>Past Games
+            </a>
+        </button>
+        <button class="tablinks" onclick="openTab(event, '3')">
+            <a class="team-logo-wrapper tabteam">
+                <span class="material-symbols-outlined">
+                    group_work
+                </span>League
+            </a>
+        </button>
+    </div>
+        <div class="tabwrapper">
+            <style>
+                .grid-table {
+                    overflow-x: auto;
+                    animation: transition-table-up 0.5s ease-out forwards;
+                    animation-delay: 100ms;
+                    gap: 0;
+                    column-gap: 1em;
+                    border-radius: 10px;
+                }
+            </style>
+            <div class="grid-table tabcontent" id="0">
+              <table class="styled-table glass" id="searchTable">
+                <thead>
+                    <tr>
+                      <th class="search" colspan="15"
+                          style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                          <span class="material-symbols-outlined">
+                              search
+                          </span>
+                          <input style="border-radius:13px;" type="text" id="searchInput" onkeyup="searchTable()"
+                              placeholder="Search for names">
+                      </th>
+                    </tr>
+                    <tr>
+                        <th>
+                          <div>Name</div>
+                        </th>
+                        <th>Age</th>
+                        <th>Position</th>
+                        <th>Jersey</th>
+                        <th>Swimming</th>
+                        <th>Ball Handling</th>
+                        <th>Passing</th>
+                        <th>Shooting</th>
+                        <th>Defense</th>
+                        <th>Goal Keeping</th>
+                        <th>Fit</th>
+                        <th>Aggression</th>
+                        <th>Overall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for player in players %}
+                  <tr>
+                    <td>
+                            <div><a href="{{ url_for('displayPlayer', id=player['player_id']) }}">{{ player['first_name'] }} {{
+                                    player['last_name'] }}</a></div>
+                        </td>
+                        <td>{{ player['age'] }}</td>
+                        <td>{{ player['position'] }}</td>
+                        <td>{{ player['jersey'] }}</td>
+                        <td>{{ player['swimming'] }}</td>
+                        <td>{{ player['ballhandling'] }}</td>
+                        <td>{{ player['passing'] }}</td>
+                        <td>{{ player['shooting'] }}</td>
+                        <td>{{ player['defense'] }}</td>
+                        <td>{{ player['goalkeeping'] }}</td>
+                        <td>{{ player['fit'] }}</td>
+                        <td>{{ player['aggression'] }}</td>
+                        <td>{{ player['overall'] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              
+              </table>
+             
+            </div>
+            <div class="grid-table tabcontent" id="1">
+              {% if nextgames|length > 0 %}
+              <table class="game-table styled-table glass">
+                  <thead>
+                    <tr style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; font-size: 10px;padding: 6px 15px;">
+                      <th>
+                        Match
+                      </th>
+                      <th colspan="4">
+                        Game
+                      </th>
+                    </tr>
+                      <!-- <tr>
+                          <th>Match</th>
+                          <th>School</th>
+                          <th>Score</th>
+                          <th>Score</th>
+                          <th>School</th>
+                      </tr> -->
+                  </thead>
+                  <tbody>
+                    {% for sched in nextgames %}
+                      <tr>
+                        <td>{{ sched['match_number'] }}</td>
+                        {% if sched['home_id'] < sched['away_id'] %}
+                        {% for t in teams %}
+                        {% if sched['home_id'] == t['team_id'] %}
+                        <td>
+                          <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                              <img class="" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                            
+                          </a>
+                          {{ t["name"] }}
+                        </td>
+                        <td>{{ sched['home_goals'] }}</td>
+                        {% endif %}
+                        {% if sched['away_id'] == t['team_id'] %}
+                        <td>{{ sched['away_goals'] }}</td>
+                        <td>
+                              <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                        <img class="" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                              {{ t['name'] }}</td>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        {% for t in teams|reverse %}
+                        {% if sched['home_id'] == t['team_id'] %}
+                        <td>
+                          <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                              <img class="" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                            
+                          </a>
+                          {{ t["name"] }}
+                        </td>
+                        <td>{{ sched['home_goals'] }}</td>
+                        {% endif %}
+                        {% if sched['away_id'] == t['team_id'] %}
+                        <td>{{ sched['away_goals'] }}</td>
+                        <td>
+                              <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                        <img class="" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                              {{ t['name'] }}</td>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              {% else %}
+                <p>No schedule</p>
+              {% endif %}
+            </div>
+            <div class="grid-table tabcontent" id="2">
+              {% if pastgames|length > 0 %}
+              <table class="game-table styled-table glass">
+                  <thead>
+                    <tr style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; font-size: 10px;padding: 6px 15px;">
+                      <th>
+                        Match
+                      </th>
+                      <th colspan="4">
+                        Game
+                      </th>
+                    </tr>
+                      <!-- <tr>
+                          <th>Match</th>
+                          <th>School</th>
+                          <th>Score</th>
+                          <th>Score</th>
+                          <th>School</th>
+                      </tr> -->
+                  </thead>
+                  <tbody>
+                    {% for sched in pastgames %}
+                      <tr>
+                        <td>{{ sched['match_number'] }}</td>
+                        {% if sched['home_id'] < sched['away_id'] %}
+                        {% for t in teams %}
+                        {% if sched['home_id'] == t['team_id'] %}
+                        <td>
+                          <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                              <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                            
+                          </a>
+                          {{ t["name"] }}
+                        </td>
+                        {% if sched['home_goals'] > sched['away_goals'] %}
+                        <td class="win">{{ sched['home_goals'] }}</td>
+                        {% elif sched['home_goals'] < sched['away_goals'] %}
+                          <td class="loose">{{ sched['home_goals'] }}</td>
+                        {% else %}
+                          <td>{{ sched['home_goals'] }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% if sched['away_id'] == t['team_id'] %}
+                        {% if sched['home_goals'] > sched['away_goals'] %}
+                        <td class="loose">{{ sched['away_goals'] }}</td>
+                        {% elif sched['home_goals'] < sched['away_goals'] %}
+                          <td class="win">{{ sched['away_goals'] }}</td>
+                        {% else %}
+                          <td>{{ sched['away_goals'] }}</td>
+                        {% endif %}
+                        <td>
+                              <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                              {{ t['name'] }}</td>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        {% for t in teams|reverse %}
+                        {% if sched['home_id'] == t['team_id'] %}
+                        <td>
+                          <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                              <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                            
+                          </a>
+                          {{ t["name"] }}
+                        </td>
+                        {% if sched['home_goals'] > sched['away_goals'] %}
+                        <td class="win">{{ sched['home_goals'] }}</td>
+                        {% elif sched['home_goals'] < sched['away_goals'] %}
+                          <td class="loose">{{ sched['home_goals'] }}</td>
+                        {% else %}
+                          <td>{{ sched['home_goals'] }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% if sched['away_id'] == t['team_id'] %}
+                        {% if sched['home_goals'] > sched['away_goals'] %}
+                        <td class="loose">{{ sched['away_goals'] }}</td>
+                        {% elif sched['home_goals'] < sched['away_goals'] %}
+                          <td class="win">{{ sched['away_goals'] }}</td>
+                        {% else %}
+                          <td>{{ sched['away_goals'] }}</td>
+                        {% endif %}
+                        <td>
+                              <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                              {{ t['name'] }}</td>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+            {% else %}
+                          <p>No Schedule</p>
+            {% endif %}
+            </div>
+        </div>
 </main>
+<script>
+    function openTab(evt, id) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(id).style.display = "grid";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("searchTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 2; i < tr.length; i++) {
+            a = tr[i].getElementsByTagName("td")[0].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+            if (a) {
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 {% endblock %}

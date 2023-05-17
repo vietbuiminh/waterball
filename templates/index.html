@@ -31,17 +31,45 @@
         <section class="split">
             <aside class="standing">
                 <h2>Standings</h2>
-              {% for stand in standing %}
-              <h3>{{ stand }}</h3>
-              {% endfor %}
-                <table class="styled-table index-table glass">
+              <style>
+                .standing-table {
+                  font-size: 0.9em;
+                }
+                .standing-table th, .standing-table td {
+                    padding: 8px;
+                }
+                .standing-table th:nth-child(3), .standing-table th:nth-child(4), .standing-table td:nth-child(3), .standing-table td:nth-child(4) {
+                  max-width: 50px !important;
+                }
+                .standing-table th:nth-child(3), .standing-table th:nth-child(4){
+                  height: 100px;
+                  white-space: nowrap;
+                  transform: translate(-9px, 25px) rotate(315deg);
+                  width: 50px;
+                }
+                 .standing-table th:nth-child(2){
+                  width: 20px !important;
+                }
+                .standing-table th:first-child{
+                  width: 180px !important;
+                }
+                .standing-table td:first-child {
+                  text-align: right;
+                  font-family: var(--font-display);
+                  font-size: 22px;
+                }
+                .standing-table tbody tr td:first-child .team-logo-wrapper {
+                  height: 1.5em;
+                }
+              </style>
+                <table class="styled-table standing-table index-table glass">
                   <thead>
                       <tr>
                           <th align ="center">School</th>
-                          <th align ="center">Conference</th>
-                          <th align ="center">Overall</th>
+                          <th align ="center">Conf.</th>
                           <th align ="center">Goals Scored</th>
                           <th align ="center">Goals Allowed</th>
+                          <th align ="center">Overall</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -55,9 +83,9 @@
                             {{ stand["name"] }}
                           </td>
                           <td align ="center">{{ stand["division"] }}</td>
-                          <td align ="center">{{ stand["wins"] }} - {{ stand["ties"] }} - {{ stand["losses"] }}</td>
                           <td align ="center">{{ stand["scored"] }}</td>
                           <td align ="center">{{ stand["against"] }}</td>
+                        <td align ="center">{{ stand["wins"] }} - {{ stand["ties"] }} - {{ stand["losses"] }}</td>
                       </tr>
                     {%endfor%}
                   </tbody>
@@ -65,61 +93,78 @@
             </aside>
           
           <article>
-            <h2>This Week Schedule</h2>
-            <section>
+            <h2>This Week Games</h2>
+            <section class="week-schedule">
           {% for sched in schedule %}
-          <p>Match {{ sched['match_number'] }}</p>
-          
-          <table class="styled-table glass">
+          <table class="game-table styled-table glass">
             <thead>
-                <tr>
+              <tr>
+                <th colspan="4" style="background-color: black; color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; font-size: 10px;padding: 6px 15px;">
+                  Match {{ sched['match_number'] }}
+                </th>
+              </tr>
+                <!-- <tr>
                     <th>School</th>
                     <th>Score</th>
-                </tr>
+                    <th>Score</th>
+                    <th>School</th>
+                </tr> -->
             </thead>
             <tbody>
-                {% for t in teams %}
-                  {% if sched['home_id'] == t['team_id']  %}
-                    
-                  <tr>
-                        <td>
-                              <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
-                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
-                                
-                              </a>
-                          {% for stand in standings %}
-                            {% if sched['home_id'] == stand['id'] %}
-                              {{ t["name"] }} ({{  stand["wins"]  }} - {{  stand["ties"]  }} - {{  stand["losses"]  }})
-                            {% endif %}
-                          {% endfor %}
-                        </td>
-                      <td align ="center">{{ sched['home_goals'] }}</td>
+                <tr>
+                  {% if sched['home_id'] < sched['away_id'] %}
+                  {% for t in teams %}
+                  {% if sched['home_id'] == t['team_id'] %}
+                  <td>
+                    <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
                       
+                    </a>
+                    {{ t["name"] }}
+                  </td>
+                  <td>{{ sched['home_goals'] }}</td>
                   {% endif %}
-                {% endfor %}
+                  {% if sched['away_id'] == t['team_id'] %}
+                  <td>{{ sched['away_goals'] }}</td>
+                  <td>
+                        <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                        {{ t['name'] }}</td>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% for t in teams|reverse %}
+                  {% if sched['home_id'] == t['team_id'] %}
+                  <td>
+                    <a href="{{ url_for('displayTeam', id=sched['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['home_id'] }}">
+                      
+                    </a>
+                    {{ t["name"] }}
+                  </td>
+                  <td>{{ sched['home_goals'] }}</td>
+                  {% endif %}
+                  {% if sched['away_id'] == t['team_id'] %}
+                  <td>{{ sched['away_goals'] }}</td>
+                  <td>
+                        <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
+                                  <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
+                        {{ t['name'] }}</td>
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
                 </tr>
-              {% for t in teams %}
-                {% if sched['away_id'] == t['team_id']  %}
-                <tr class="active-row">
-                    <td>
-                      <a href="{{ url_for('displayTeam', id=sched['away_id']) }}" class="team-logo-wrapper">
-                                <img class="grey-filter" src="{{ url_for('static',filename=t['logo']) }}" alt="{{ sched['away_id'] }}"></a>
-                          {% for stand in standings %}
-                            {% if sched['away_id'] == stand['id'] %}
-                              {{ t["name"] }} ({{  stand["wins"]  }} - {{  stand["ties"]  }} - {{  stand["losses"]  }})
-                            {% endif %}
-                          {% endfor %}</td>
-                    <td align ="center">{{ sched['away_goals'] }}</td>
-                </tr>
-                {% endif %}
-              {% endfor %}
-            
-                <!-- and so on... -->
             </tbody>
         </table>
         {% endfor %}
       </section>
+        <a style="text-decoration:none;" href="/schedule/" class="setting-button">
+          <button action="/schedule/" class="button"  style="margin-right:auto;">
+            More Matches
+          </button>
+        </a>
       </section>
+     
     </article>      
         
     </main>

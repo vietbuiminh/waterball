@@ -2,7 +2,6 @@
 {% block content %}
 <a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
 <a href="/profile/lineups/" class="tool-item hover">lineups</a>
-<a href="/profile/schedule/" class="tool-item hover">schedule</a>
 <a href="/profile/standings/" class="tool-item hover">standings</a>
 <a href="/profile/players/" class="tool-item hover active-item">players</a>
 </div>
@@ -178,10 +177,21 @@
                 <input type="text" name="last_name" placeholder="Last Name"
                     value="{{ request.form['last_name'] }}"></input>
                 <p>Year</p>
-                <input type="text" name="age" placeholder="Year" value="{{ request.form['age'] }}"></input>
+                <select name="age" id="age">
+                  <option value="Fr">Freshman</option>
+                  <option value="So">Sophomore </option>
+                  <option value="Jr">Junior</option>
+                  <option value="Sr">Senior</option>
+                </select> 
                 <p>Position</p>
-                <input type="text" name="position" placeholder="Position"
-                    value="{{ request.form['position'] }}"></input>
+                <!-- <input type="text" name="position" placeholder="Position"
+                    value="{{ request.form['position'] }}"></input> -->
+                <select name="position" id="position">
+                <option value="GK">Goal Keeper</option>
+                <option value="Attacker">Attacker</option>
+                <option value="CF">Center Forward</option>
+                <option value="CD">Center Defender</option>
+                </select> 
                 <p>Jersey</p>
                 <input type="text" name="jersey" placeholder="Number" value="{{ request.form['jersey'] }}"></input>
 

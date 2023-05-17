@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 
 class User(UserMixin):
-  def __init__(self, id, first_name, last_name, email, status, password, last_accessed, access_level, offset, avatar):
+  def __init__(self, id, first_name, last_name, email, status, password, last_accessed, access_level, offset, avatar,admin):
     self.id = id
     self.first_name = first_name
     self.last_name = last_name
@@ -12,6 +12,7 @@ class User(UserMixin):
     self.access_level = access_level
     self.offset = offset
     self.avatar = avatar
+    self.admin = admin
     self.authenticated = False
   def is_active(self):
     return self.is_active()

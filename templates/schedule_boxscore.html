@@ -1,0 +1,312 @@
+{% extends 'template.html' %}
+{% block content %}
+<!-- <section class="header-img adjust">
+</section> -->
+<style>
+  .grid-table {
+    overflow-x: auto;
+    animation: transition-table-up 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+  .styled-table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .styled-table > *{
+    font-size: 0.95em;
+  }
+  .styled-table th, .styled-table td {
+    padding: 10px 10px;
+  }
+  .styled-table th:nth-child(n + 4), .styled-table td:nth-child(n + 4) {
+    max-width: 50px;
+  }
+  .styled-table th:nth-child(n + 4) {
+    height: 100px;
+    white-space: nowrap;
+    transform: translate(-2px, 21px) rotate(315deg);
+    width: 30px;
+  }
+  .styled-table th:last-child, .styled-table td:last-child{
+    max-width: 80px !important;
+  }
+  .tablinks a, .tablinks {
+    font-family: var(--font-display);
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 0.8em;
+    justify-content: start;
+    gap: 0.5em;
+  }
+  .tabteam {
+    height: 35px !important;
+  }
+  .team-style {
+    text-align: center;
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.8em;
+    color: black;
+  }
+  .team-logo-wrapper {
+    height: 52px;
+    align-items: center;
+    flex: auto;
+    justify-content: center;
+    opacity: 0.9;
+    transition: .25s;
+    text-decoration: none;
+  }
+  .team-logo-wrapper h2 {
+    transition: .25s;
+  }
+  .team-logo-wrapper .grey-filter {
+    -webkit-transition: .25s -webkit-filter linear;
+    -moz-transition: .25s -moz-filter linear;
+    -moz-transition: .25s filter linear;
+    -ms-transition: .25s -ms-filter linear;
+    -o-transition: .25s -o-filter linear;
+    transition: .25s filter linear, .25s -webkit-filter linear;
+  }
+  .team-logo-wrapper:hover h2, .team-logo-wrapper:hover .grey-filter{
+    color: var(--secondary-blue);
+    filter: revert;
+  }
+  td .button .material-symbols-outlined{
+    font-size: 15px;
+  }
+  td .button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: rgba(0,0,0,0);
+    color: grey;
+  }
+  td .button:hover {
+    transform: translatey(1px);
+  }
+  td div {
+    min-width: 130px;
+  }
+  .styled-table td:nth-child(1) a {
+      text-decoration: none;
+      color: var(--hero-blue);
+      transition: 100ms ease;
+  }
+  .styled-table td:nth-child(1) a:hover {
+    color: var(--accent-yellow);
+  }
+  .appstyle {
+    position:fixed;
+    width:100%;
+  }
+  
+</style>
+    </header>
+    <main class="paddingtop">
+      {% for team in teams %}
+        {% if schedule['home_id'] == team['team_id'] %}
+      <div class="grid-table tabcontent" id="all">
+          <h2 class="team-style">
+                    
+                    {{ team["name"] }}
+            <a href="{{ url_for('displayTeam', id=schedule['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ schedule['home_id'] }}"> </a>
+            {% if schedule['home_goals'] > schedule['away_goals'] %}
+                    <p class="win" style="font-size:40px">{{ schedule['home_goals'] }}</p>
+                    {% elif schedule['home_goals'] < schedule['away_goals'] %}
+                    <p class="loose">{{ schedule['home_goals'] }}</p>
+                    {% else %}
+                    <p class="win">{{ schedule['home_goals'] }}</p>
+                    {% endif %}
+            </h2>
+            
+              
+                    
+                  
+                 
+            
+                      
+                   
+          
+          <table class="styled-table glass" class="sortable" id="searchTable">
+          <thead>
+              <tr>
+                <th class="search" colspan="15" style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                  <span class="material-symbols-outlined">
+                  search
+                  </span>
+                  <input style="border-radius:13px;"type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names">
+                </th>
+              </tr>
+              <tr>
+                  <th><div>Name</div></th>
+                  <th>Position</th>
+                  <th>Year</th>
+                  <th>Overall</th>
+                  <th>Games Played</th>
+                  <th>Shots</th>
+                  <th>Goals</th>
+                  <th>Shot%</th>
+                  <th>Assist</th>
+                  <th>Points</th>
+                  <th>Steals</th>
+                  <th>Saves</th>
+                  <th>Save Percentage</th>
+              </tr>
+          </thead>
+          <tbody>
+            
+            {% for stat in player_stats %}
+            {% if stat['team_id'] == team['team_id'] %}
+              {% if stat['match_number'] == "{}".format(schedule['match_number']) %}
+                <tr>
+                    <td><div><a href="{{ url_for('displayPlayer', id=stat['id']) }}">{{ stat['first'] }} {{ stat['last'] }}</a></div></td>
+                    <td align ="center">{{ stat["position"] }}</td>
+                    <td align ="center">{{ stat["year"] }}</td>
+                    <td align ="center">{{ stat["overall"] }}</td>
+                    <td align ="center">{{ stat["game_played"] }}</td>
+                    <td align ="center">{{ stat["shots"] }}</td>
+                    <td align ="center">{{ stat["goals"] }}</td>
+                    <td align ="center">{{ "%.2f"|format(stat["shot_percentage"]|float) }}</td>
+                    <td align ="center">{{ stat["assists"] }}</td>
+                    <td align ="center">{{ stat["points"] }}</td>
+                    <td align ="center">{{ stat["steals"] }}</td>
+                    <td align ="center">{{ stat["saves"] }}</td>
+                    <td align ="center">{{ "%.2f"|format(stat["save_percentage"]|float) }}</td>
+                </tr>
+              {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      {% for team in teams %}
+      {% if schedule['away_id'] == team['team_id'] %}
+      <div class="grid-table tabcontent" id="all">
+          <h2 class="team-style">{{ team["name"] }}  <a href="{{ url_for('displayTeam', id=schedule['home_id']) }}" class="team-logo-wrapper">
+                        <img class="grey-filter" src="{{ url_for('static',filename=team['logo']) }}" alt="{{ schedule['home_id'] }}"> </a> {% if schedule['away_goals'] > schedule['home_goals'] %}
+                  <p class="win" style="font-size:40px">{{ schedule['away_goals'] }}</p>
+                  {% elif schedule['away_goals'] < schedule['home_goals'] %}
+                  <p class="loose" style="font-size:40px">{{ schedule['away_goals'] }}</p>
+                  {% else %}
+                  <p class="win" style="font-size:40px">{{ schedule['away_goals'] }}</p>
+                  {% endif %} </h2>
+                     
+          
+          <table class="styled-table glass" class="sortable" id="searchTable">
+          <thead>
+              <tr>
+                <th class="search" colspan="15" style="background: black;color: white; text-transform: uppercase; text-align:center;letter-spacing: 0.3em; padding:8px 10px 0px 10px;">
+                  <span class="material-symbols-outlined">
+                  search
+                  </span>
+                  <input style="border-radius:13px;"type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names">
+                </th>
+              </tr>
+              <tr>
+                  <th><div>Name</div></th>
+                  <th>Position</th>
+                  <th>Year</th>
+                  <th>Overall</th>
+                  <th>Games Played</th>
+                  <th>Shots</th>
+                  <th>Goals</th>
+                  <th>Shot%</th>
+                  <th>Assist</th>
+                  <th>Points</th>
+                  <th>Steals</th>
+                  <th>Saves</th>
+                  <th>Save Percentage</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for stat in player_stats %}
+            {% if stat['team_id'] == team['team_id'] %}
+            {% if stat['match_number'] == "{}".format(schedule['match_number']) %}
+            
+              <tr>
+                  <td><div><a href="{{ url_for('displayPlayer', id=stat['id']) }}">{{ stat['first'] }} {{ stat['last'] }}</a></div></td>
+                  <td align ="center">{{ stat["position"] }}</td>
+                  <td align ="center">{{ stat["year"] }}</td>
+                  <td align ="center">{{ stat["overall"] }}</td>
+                  <td align ="center">{{ stat["game_played"] }}</td>
+                  <td align ="center">{{ stat["shots"] }}</td>
+                  <td align ="center">{{ stat["goals"] }}</td>
+                  <td align ="center">{{ "%.2f"|format(stat["shot_percentage"]|float) }}</td>
+                  <td align ="center">{{ stat["assists"] }}</td>
+                  <td align ="center">{{ stat["points"] }}</td>
+                  <td align ="center">{{ stat["steals"] }}</td>
+                  <td align ="center">{{ stat["saves"] }}</td>
+                  <td align ="center">{{ "%.2f"|format(stat["save_percentage"]|float) }}</td>
+              </tr>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+         
+      
+    </main>
+<script>
+function openTab(evt, id) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(id).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+function searchTable() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("searchTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 2; i < tr.length; i++) {
+    a = tr[i].getElementsByTagName("td")[0].getElementsByTagName("div")[0].getElementsByTagName("a")[0];
+    if (a) {
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    // for (j = 1; j < 4; j++) {
+    //   other = tr[i].getElementsByTagName("td")[j];
+    //   if (other) {
+    //       txtValue = other.textContent || other.innerText;
+    //     if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    //       tr[i].style.display = "";
+    //     } else {
+    //       tr[i].style.display = "none";
+    //     }
+    //   }
+    // }
+  }
+}
+</script>
+{% endblock %}

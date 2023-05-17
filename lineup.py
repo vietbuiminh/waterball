@@ -76,18 +76,6 @@ class Players():
         position = mycursor.fetchone()[0]
         print(position)
 
-        sql = "SELECT first_name FROM first_name ORDER BY RAND() LIMIT 1"
-        mycursor = connection.cursor()
-        mycursor.execute(sql)
-        firstname = mycursor.fetchone()[0]
-        print(firstname)
-
-        sql = "SELECT last_name FROM last_name ORDER BY RAND() LIMIT 1"
-        mycursor = connection.cursor()
-        mycursor.execute(sql)
-        lastname = mycursor.fetchone()[0]
-        print(lastname)
-
         age = random.randrange(1, 5)
         year = ""
         if age == 1:

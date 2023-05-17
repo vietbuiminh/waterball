@@ -158,7 +158,7 @@ background: linear-gradient(152deg, rgba(66,121,255,1) 0%, rgba(229,229,247,1) 1
   }
 </style>
 <main class="">
-  {% if current_user.id != coach['coach_id'] %}
+  {% if (current_user.id != coach['coach_id']) and (current_user.admin == 'N') %}
     <h2 class="adjust">You do not have access to edit this player</h2>
   {% else %}
   <div class="title adjust">
@@ -170,7 +170,7 @@ background: linear-gradient(152deg, rgba(66,121,255,1) 0%, rgba(229,229,247,1) 1
     </h1>
     <form action="{{ url_for('deletePlayer', id=player['player_id']) }}" method="POST">
     <div class="delete-button adjust">
-    <button type="submit" class="button"><span class="material-symbols-outlined">
+    <button type="submit" class="button" onclick="return confirm('Are you sure you want to delete this player?')"><span class="material-symbols-outlined">
   delete
   </span> Delete Player</button>
     </div>
@@ -228,15 +228,51 @@ background: linear-gradient(152deg, rgba(66,121,255,1) 0%, rgba(229,229,247,1) 1
                 placeholder="{{ player['last_name']}}" 
                 value="{{ request.form['last_name'] }}"></input>
         <p>Year</p>
-          <input type="text" 
-                name="age" 
-                placeholder="{{ player['age']}}" 
-                value="{{ request.form['age'] }}"></input>
+        <select name="age" id="age">
+            {% if player['age'] == 'Fr' %}
+            <option value="Fr" selected>Fr</option>
+            {%else%}
+            <option value="Fr">Fr</option>
+            {%endif%}
+            {% if player['age'] == 'So' %}
+            <option value="So" selected>So</option>
+            {%else%}
+            <option value="So">So</option>
+            {%endif%}
+            {% if player['age'] == 'Jr' %}
+            <option value="Jr" selected>Jr</option>
+            {%else%}
+            <option value="Jr">Jr</option>
+            {%endif%}
+            {% if player['age'] == 'Sr' %}
+            <option value="Sr" selected>Sr</option>
+            {%else%}
+            <option value="Sr">Sr</option>
+            {%endif%}
+          </select> 
         <p>Position</p>
-          <input type="text" 
-                name="position" 
-                placeholder="{{ player['position']}}" 
-                value="{{ request.form['position'] }}"></input>
+          <select name="position" id="position">
+            {% if player['position'] == 'GK' %}
+            <option value="GK" selected>Goal Keeper</option>
+            {%else%}
+            <option value="GK">Goal Keeper</option>
+            {%endif%}
+            {% if player['position'] == 'Attacker' %}
+            <option value="Attacker" selected>Attacker</option>
+            {%else%}
+            <option value="Attacker">Attacker</option>
+            {%endif%}
+            {% if player['position'] == 'CF' %}
+            <option value="CF" selected>Center Forward</option>
+            {%else%}
+            <option value="CF">Center Forward</option>
+            {%endif%}
+            {% if player['position'] == 'CD' %}
+            <option value="CD"selected>Center Defender</option>
+            {%else%}
+            <option value="CD">Center Defender</option>
+            {%endif%}
+          </select> 
         <p>Jersey</p>
           <input type="text" 
                 name="jersey" 

@@ -2,7 +2,6 @@
 {% block content %}
 <a href="/profile/dashboard/" class="tool-item hover">dashboard</a>
 <a href="/profile/lineups/" class="tool-item hover">lineups</a>
-<a href="/profile/schedule/" class="tool-item hover">schedule</a>
 <a href="/profile/standings/" class="tool-item hover">standings</a>
 <a href="/profile/players/" class="tool-item hover active-item">players</a>
 </div>
@@ -120,14 +119,17 @@
   .tabwrapper {
     border-top: none;
   }
+  
 </style>
 <main class="appstyle">
+  {% if teams|length > 0 %}
     <form class="add-button corner" action="{{ url_for('add_player') }}">
       <button type="submit" class="button glass">
       <span class="material-symbols-outlined">
         add
       </span>Add Player</button>
     </form>
+  {% endif %}
     <div class="tab">
         <button class="tablinks" onclick="openTab(event, 'all')" id="defaultOpen">
             <a class="team-logo-wrapper tabteam">
