@@ -438,19 +438,21 @@ def delete_profile(id):
   teams = conn.execute('SELECT * FROM teams WHERE coach_id = ?',
                        (coach['coach_id'], )).fetchall()
   if len(teams) <= 0:
-    if int(current_user.id) == int(id):
-      logout_user()
-    conn.execute('DELETE FROM coaches WHERE coach_id = ?',
-                 (coach['coach_id'], ))
-    conn.commit()
-    if int(current_user.id) == 1:
+    if current_user.admin == 'Y':
       flash('User deleted', 'correct')
+      conn.execute('DELETE FROM coaches WHERE coach_id = ?',
+                   (coach['coach_id'], ))
+      conn.commit()
       return redirect(url_for('admin'))
     else: 
-      flash('Your Profile is deleted', 'correct')
+      if int(current_user.id) == int(id):
+        logout_user()
+      conn.execute('DELETE FROM coaches WHERE coach_id = ?',
+                   (coach['coach_id'], ))
+      conn.commit()
       return redirect(url_for('coachlogin'))
   else:
-    if int(current_user.id != 1):
+    if current_user.admin != 'Y':
       flash('You have to remove your team from your profile', 'error')
       return redirect(url_for('edit_profile'))
     else:
@@ -510,7 +512,6 @@ def reset_lineups(team_id, match_number):
 @app.route('/profile/lineups/', methods=('GET', 'POST'))
 @login_required
 def profile_lineups():
-
   conn = get_db_connection()
   players = conn.execute(
       'SELECT p.* FROM players AS p INNER JOIN (teams AS t INNER JOIN coaches as c ON c.coach_id = t.coach_id) ON p.team_id = t.team_id WHERE c.coach_id = ?',
@@ -556,7 +557,7 @@ def profile_lineups():
               if position_request != 'B':
                 match position_request:
                   case 'CF':
-                    conn.execute('UPDATE lineups SET cf_player = ? WHERE match_number = ?',(player_id,match_number))
+                    conn.execute('UPDATE lineups SET cf_player = ? WHERE team_id = ? AND match_number = ?',(player_id,team['team_id'],match_number))
                     flash(f"Center -> {player['first_name']} {player['last_name']}", 'correct')
                   case 'CD':
                     conn.execute('UPDATE lineups SET cd_player = ? WHERE team_id = ? AND match_number = ?',(player_id,team['team_id'], match_number))
